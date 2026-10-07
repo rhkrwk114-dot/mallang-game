@@ -656,6 +656,37 @@ body.mode-plan .weekbar{display:none}
 .psn{margin-top:12px;padding:12px 14px;border-radius:18px;background:linear-gradient(135deg,#fff4dc,#ffe6ee);color:#3e3431;display:flex;flex-direction:column;gap:3px;text-align:center}
 .psn b{font-size:18px}.psn .sub{color:#7a6a5e}
 #tray{margin-top:4px}
+/* 도감 */
+.etile.sp{position:relative;cursor:pointer;transition:transform .12s}
+.etile.sp:active{transform:scale(.95)}
+.etile .no{position:absolute;left:8px;top:6px;font-family:"Jua",sans-serif;font-size:11px;color:var(--sub);opacity:.8}
+.etile .newb{position:absolute;right:6px;top:6px;font-style:normal;font-size:10px;font-weight:900;color:#fff;background:var(--coral-b,#f2708b);padding:1px 6px;border-radius:999px;animation:bob 1.4s ease-in-out infinite}
+.etile .shb{position:absolute;right:6px;bottom:30px}.etile .shb .ic{width:16px;height:16px}
+.etile.seen svg.slime{filter:saturate(.35) brightness(1.05);opacity:.75}
+.dexhead{display:flex;align-items:center;gap:14px}
+.ring{--p:0;flex:none;width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#f2708b calc(var(--p)*1%),rgba(255,255,255,.55) 0);position:relative}
+.ring::before{content:"";position:absolute;inset:7px;border-radius:50%;background:var(--paper)}
+.ring b{position:relative;font-size:16px}
+.showcase .sc-stage{position:relative;height:270px;overflow:hidden;border-radius:30px 30px 0 0;background:radial-gradient(circle at 50% 42%,#fffaf0 0,#fbe9d4 45%,#efd2b4 100%)}
+.sc-stage.shiny{background:radial-gradient(circle at 50% 42%,#fffaf3 0,#f3e4ff 45%,#d9c8f2 100%)}
+.sc-rays{position:absolute;left:50%;top:44%;width:620px;height:620px;margin:-310px 0 0 -310px;background:repeating-conic-gradient(rgba(255,255,255,.55) 0 8deg,rgba(255,255,255,0) 8deg 22deg);animation:spin 40s linear infinite;-webkit-mask-image:radial-gradient(circle,#000 20%,transparent 62%);mask-image:radial-gradient(circle,#000 20%,transparent 62%)}
+.sc-rug{position:absolute;left:50%;bottom:22px;width:72%;height:44px;margin-left:-36%;border-radius:50%;background:radial-gradient(ellipse,#fffdf6 0,#f6ead9 70%,rgba(246,234,217,0) 72%);box-shadow:0 6px 18px rgba(122,84,52,.12)}
+.sc-stage .spk{position:absolute;width:28px;height:28px;animation:bob 1.6s ease-in-out infinite;z-index:2}
+.sc-stage .spk .ic{width:100%;height:100%}
+.sc-mal{position:absolute;left:50%;bottom:14px;width:74%;transform:translateX(-50%);animation:scFloat 3.2s ease-in-out infinite;padding:0;transform-origin:50% 100%}
+.sc-mal svg{width:100%;display:block}
+.sc-mal.boing{animation:scBoing .55s cubic-bezier(.3,1.6,.5,1)}
+@keyframes scFloat{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-6px)}}
+@keyframes scBoing{0%{transform:translateX(-50%) scale(1,1)}25%{transform:translateX(-50%) scale(1.18,.78)}55%{transform:translateX(-50%) scale(.92,1.1)}100%{transform:translateX(-50%) scale(1,1)}}
+.sc-no{position:absolute;left:16px;top:14px;font-size:15px;color:#a8794e;background:rgba(255,255,255,.6);padding:3px 10px;border-radius:999px}
+.sc-nav{position:absolute;top:50%;margin-top:-22px}.sc-nav.l{left:10px}.sc-nav.r{right:10px}.sc-nav.r .ic{transform:rotate(180deg)}
+.sc-var{display:flex;justify-content:center;gap:6px;margin-top:8px}
+.sc-var button{display:inline-flex;align-items:center;gap:3px;padding:5px 14px;border-radius:999px;font-weight:800;font-size:13px;background:var(--glass);box-shadow:var(--glass-sh),inset 0 1px 0 var(--glass-line)}
+.sc-var button .ic{width:15px;height:15px}
+.sc-var button.on{background:linear-gradient(180deg,var(--coral-a),var(--coral-b));color:#fff}
+.sc-hist{margin-top:10px;display:flex;flex-direction:column;gap:6px;font-size:13px}
+.sc-hist div{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:14px;background:var(--paper2)}
+.sc-hist .ic{width:20px;height:20px}.sc-hist span{flex:1;font-weight:700}.sc-hist em{font-style:normal;color:var(--sub);font-size:12px}
 @media (prefers-reduced-motion: reduce){
   #mlgAnim,.eye,.chomp,.sweat,#prop.show,.slime .sb,.spk,[class^="amb-"],[class*=" amb-"],.tile.now,.beads i.now{animation-duration:0s!important;animation-iteration-count:1!important}
 }
@@ -1814,7 +1845,7 @@ const ART2={
   artroom:()=>W2.wall('#fdf1df','#f5e3ca')+[['#f5b7cf',60,70,16],['#8fa8ee',340,96,13],['#f7cf5a',300,44,11],['#9edc86',110,150,9]].map(([c,x,y,r])=>`<circle cx="${x}" cy="${y}" r="${r}" fill="${c}" opacity=".45"/><circle cx="${x+r}" cy="${y-r*.6}" r="${r*.4}" fill="${c}" opacity=".45"/>`).join('')+W2.frame(160,56,80,58,'#8fcf7c','#f5b7cf')+W2.trim('#ecd9bb')+W2.floor('#ecd8bb','#dcc2a0')+bx(16,336,8,110,'#b9875c',{flat:1})+bx(14,250,70,60,'#fffaf0')+`<path d="M24 240c6-16 18-20 26-10s14-2 14 12z" fill="#f5b7cf" opacity=".9"/>`+bx(320,336,8,110,'#b9875c',{flat:1})+bx(316,252,72,60,'#fffaf0')+ball(352,232,10,'#8fa8ee',{noShadow:1})+cyl(80,372,10,16,'#f28fb0')+cyl(104,376,9,14,'#7fcfb9')+W2.vig(),
   dojo:()=>W2.wall('#f1e3c6','#e3cfa6')+[30,90,150,250,310,370].map(x=>`<rect x="${x}" width="4" height="302" fill="#c9a877" opacity=".35"/>`).join('')+bx(32,212,46,160,'#fff8ea',{wall:1,r:3})+`<path d="M55 78c-8 18 10 28 0 70" stroke="#3e3431" stroke-width="6" stroke-linecap="round" fill="none" opacity=".75"/>`+bx(322,212,46,160,'#fff8ea',{wall:1,r:3})+`<path d="M345 80c8 20-10 26 0 70" stroke="#3e3431" stroke-width="6" stroke-linecap="round" fill="none" opacity=".75"/>`+`<path d="M200 0V56" stroke="#7a5a44" stroke-opacity=".5" stroke-width="2"/>`+glowC(200,84,60,'#ffd2a0',.45)+`<g class="amb-sway" style="transform-origin:200px 0px"><ellipse cx="200" cy="82" rx="20" ry="26" fill="${rgr([[0,'#ffb09a'],[1,'#e86a5a']],.4,.35,.7)}"/></g>`+W2.trim('#c9a877')+W2.floor('#ddd09c','#cbbb82','tatami','#8d7c46')+cyl(352,340,16,62,'#c99a6a')+ball(352,268,14,'#e0b080',{noShadow:1})+W2.vig(),
   trail:()=>W2.sky('#cfe7f2','#eef4e4')+W2.cloud(40,62)+W2.cloud(250,40,.8)+W2.hills('#c9e6b2',250,.7)+W2.haze('#eef4e4',200,300)+W2.hills('#b4dc98',300)+W2.grass('#b9da9c','#9cc77e')+`<path d="M130 400C160 360 186 330 200 302 214 330 240 360 270 400Z" fill="${lg([[0,'#e3d1ab'],[1,'#d6bf92']])}"/>`+W2.tree(46,330,1.1)+W2.tree(364,334,.95,'#7cc06a')+W2.bush(90,360,.8)+W2.vig(),
-  pool:()=>W2.wall('#e3f2f8','#cfe6ef',{pat:W2.tilesW('rgba(140,190,210,.35)')})+W2.win(140,36,120,78,'#d4eff9')+`<path d="M0 30Q200 52 400 30" fill="none" stroke="#f2577a" stroke-width="3" stroke-dasharray="12 9"/>`+W2.trim('#d6ebf1')+`<rect y="302" width="400" height="98" fill="${lg([[0,'#9ad7ea'],[1,'#6fc0dc']])}"/><g class="amb-wave">${[318,340,366,392].map((y,i)=>`<path d="M-40 ${y}q20-6 40 0t40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0" fill="none" stroke="#fff" stroke-opacity="${.5-i*.08}" stroke-width="3"/>`).join('')}</g><path d="M0 352H400" stroke="#f2577a" stroke-width="4" stroke-dasharray="10 8" opacity=".8"/>`+`<path d="M40 302V236M70 302V236M40 256H70M40 280H70" stroke="#b9c8d0" stroke-width="5" stroke-linecap="round"/>`+`<circle cx="340" cy="372" r="16" fill="none" stroke="#ff8f8f" stroke-width="9"/><circle cx="340" cy="372" r="16" fill="none" stroke="#fff" stroke-width="9" stroke-dasharray="8 17"/>`+W2.vig(),
+  pool:()=>W2.wall('#e3f2f8','#cfe6ef',{pat:W2.tilesW('rgba(140,190,210,.35)')})+W2.win(140,36,120,78,'#d4eff9')+``+W2.trim('#d6ebf1')+`<rect y="302" width="400" height="98" fill="${lg([[0,'#9ad7ea'],[1,'#6fc0dc']])}"/><g class="amb-wave">${[318,340,366,392].map((y,i)=>`<path d="M-40 ${y}q20-6 40 0t40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0" fill="none" stroke="#fff" stroke-opacity="${.5-i*.08}" stroke-width="3"/>`).join('')}</g>`+`<path d="M40 302V236M70 302V236M40 256H70M40 280H70" stroke="#b9c8d0" stroke-width="5" stroke-linecap="round"/>`+`<circle cx="340" cy="372" r="16" fill="none" stroke="#ff8f8f" stroke-width="9"/><circle cx="340" cy="372" r="16" fill="none" stroke="#fff" stroke-width="9" stroke-dasharray="8 17"/>`+W2.vig(),
   yoga:()=>W2.wall('#e6f1e3','#d7e7d2')+W2.win(132,42,136,128,'#e6f5ea','#cfe5c8')+W2.trim('#d9e6d2')+W2.floor('#e6dcc6','#d5c7aa')+W2.spill(124,110)+fq(200,356,190,46,'#b8dbb0')+fq(70,372,90,30,'#f2c2cf')+W2.plant(40,316,1.3)+W2.plant(362,316,1.1)+cyl(104,300,5,18,'#fff6ea',{noShadow:1})+glowC(104,272,16,'#ffd66b',.8,'amb-blink')+cyl(300,300,5,18,'#fff6ea',{noShadow:1})+glowC(300,272,16,'#ffd66b',.8,'amb-blink')+W2.vig(),
   park:()=>W2.sky('#cfe7f2','#eef4e4')+glowC(330,62,46,'#ffe58a',.7,'amb-glow')+ball(330,62,20,'#ffd56a',{noShadow:1})+W2.cloud(60,70)+W2.cloud(220,38,.7)+W2.hills('#cfe9b8',268,.7)+W2.haze('#eef4e4',220,300)+W2.hills('#bfe2a6',302)+W2.grass('#bcdc9e','#9ec880')+W2.tree(40,334,1.2)+W2.bush(352,326,1)+bx(280,330,96,10,'#d9a877')+bx(280,312,96,8,'#e3b788',{flat:1})+W2.flower(90,384,'#f28fb0')+W2.flower(112,374,'#f7cf5a')+W2.flower(322,388,'#c9a7ec')+W2.vig(),
   arcade:()=>`<rect width="400" height="302" fill="${lg([[0,'#463f6e'],[1,'#5d4f86']])}"/>`+W2.dots('rgba(255,255,255,.05)')+`<path d="M60 0L0 300H140Z" fill="${lg([[0,'#f2577a',.28],[1,'#f2577a',0]])}" class="amb-blink"/><path d="M340 0L270 300H400Z" fill="${lg([[0,'#7ef0c0',.25],[1,'#7ef0c0',0]])}" class="amb-blink"/>`+W2.trim('#3a3355')+W2.floor('#433b63','#2f2a4d','check','#8a7cc4')+W2.cab(8,318,'#9b8ce0')+W2.cab(76,322,'#f2a6c4')+W2.cab(262,322,'#7fcfb9')+W2.cab(330,318,'#f6c94c')+W2.stars()+`<rect width="400" height="400" fill="${rgr([[0,'#000',0],[.7,'#000',0],[1,'#120c24',.4]],.5,.45,.75)}"/>`,
@@ -2061,50 +2092,53 @@ let UID=0;
    mat: squash 눌림 깊이 / k 탄성 / c 감쇠(클수록 느리고 덜 튕김) / stretch 늘어남 / skew 흔들림 / wob 놓을 때 출렁임
    새 종류는 이 표에 한 줄 추가하면 육성·이벤트·도감·알·촉감놀이에 모두 반영된다 */
 const SPECIES={
- jelly:{name:'기본 젤리 말랑이',short:'젤리',nick:'말랑이',form:'dome',tex:'jelly',bw:54,bh:90,cp:.62,side:.42,kb:4,eye:.52,alpha:.9,
+ jelly:{name:'기본 젤리 말랑이',short:'젤리',nick:'말랑이',form:'blob',tex:'jelly',bw:62,bh:82,cp:.66,side:.4,kb:9,eye:.5,alpha:.9,
    mat:{mode:'elastic',follow:.35,squash:.42,k:320,c:7,stretch:.18,skew:.05,wob:30,spread:.85},idle:'breathe',snd:'jelly',
    feel:'탱글 · 출렁',desc:'투명하고 출렁출렁. 누르면 탱글하게 튕겨 나온다. 제일 흔하지만 제일 멍청한 얼굴.',touch:['말랑!','출렁~','탱글!'],
    gift:null,giftText:'뭐든 무난하게 출렁여요'},
- pudding:{name:'푸딩 말랑이',short:'푸딩',nick:'푸딩이',form:'pudding',tex:'pudding',bw:56,bh:80,eye:.42,pal:['#fbe8ab','#f0c96c','#b98a49'],
+ pudding:{name:'푸딩 말랑이',short:'푸딩',nick:'푸딩이',form:'pudding',tex:'pudding',bw:56,bh:80,eye:.42,pal:['#ffeb9e','#ffc44a','#c98a2e'],
    mat:{mode:'jiggle',follow:.2,squash:.3,k:230,c:3.5,stretch:.08,skew:.12,wob:90,spread:.7},idle:'jiggle',snd:'pudding',
    feel:'흔들흔들 · 탱탱',desc:'머리에 캐러멜을 이고 다닌다. 한 번 흔들리면 한참 동안 멈추지 않는다.',touch:['흔들흔들~','캐러멜 조심!','부르르'],
    gift:{act:'play',d:{aff:1}},giftText:'놀 때 더 빨리 친해져요'},
- mochi:{name:'찹쌀떡 말랑이',short:'찹쌀떡',nick:'모찌',form:'dome',tex:'mochi',bw:64,bh:64,cp:.78,side:.28,kb:13,eye:.5,pal:['#ffffff','#f1ebe4','#cfc3b6'],
+ mochi:{name:'찹쌀떡 말랑이',short:'찹쌀떡',nick:'모찌',form:'dome',tex:'mochi',bw:64,bh:64,cp:.78,side:.28,kb:13,eye:.5,pal:['#ffffff','#fff0e6','#e2bfae'],
    mat:{mode:'sticky',stick:380,follow:.3,squash:.4,k:55,c:9,stretch:.6,skew:.02,wob:8,spread:.95},idle:'sag',snd:'mochi',
    feel:'쫀득 · 쭈욱',desc:'하얗고 쫀득하다. 위로 당기면 끝없이 늘어나고, 놓으면 천천히 퍼진다.',touch:['쭈욱~','쫀득!','늘어난다~'],
    gift:{act:'rest',d:{stress:-5}},giftText:'쉬는 날 더 푹 퍼져요'},
- marsh:{name:'마시멜로 말랑이',short:'마시멜로',nick:'마시',form:'box',tex:'marsh',bw:44,bh:98,rr:22,eye:.56,pal:['#fff5f8','#f8dbe3','#d9a9b8'],
+ marsh:{name:'마시멜로 말랑이',short:'마시멜로',nick:'마시',form:'box',tex:'marsh',bw:44,bh:98,rr:22,eye:.56,pal:['#fff3f7','#ffcadb','#e693ad'],
    mat:{mode:'foam',follow:.06,squash:.46,k:36,c:13,stretch:.1,skew:.01,wob:0,spread:.75},idle:'slow',snd:'marsh',
    feel:'폭신 · 느긋한 복원',desc:'원통형 몸. 꾹 누르면 납작해졌다가 아주 느긋하게 돌아온다.',touch:['포옥~','폭신...','천천히 돌아갈게'],
    gift:{start:{aff:8}},giftText:'처음부터 사람을 잘 따라요'},
- bread:{name:'식빵 말랑이',short:'식빵',nick:'식빵이',form:'loaf',tex:'bread',bw:50,bh:90,eye:.4,pal:['#e9b874','#f8e5c0','#a96f33'],stroke:4,
+ bread:{name:'식빵 말랑이',short:'식빵',nick:'식빵이',form:'loaf',tex:'bread',bw:50,bh:90,eye:.4,pal:['#f3b257','#ffe6b0','#b86626'],stroke:4,
    mat:{mode:'foam',follow:.06,squash:.5,k:26,c:12,stretch:.05,skew:0,wob:0,spread:.6},idle:'slow',snd:'bread',
    feel:'푹 · 스르륵 부풂',desc:'고소한 냄새가 난다. 푹 눌리면 반죽처럼 스르륵 부풀어 오른다.',touch:['푹신!','고소하지?','스르륵~'],
    gift:{act:'work',d:{money:10}},giftText:'알바할 때 조금 더 벌어요'},
- bun:{name:'크림빵 말랑이',short:'크림빵',nick:'크림이',form:'dome',tex:'bun',bw:58,bh:72,cp:.72,side:.34,kb:8,eye:.44,pal:['#f6c47c','#e3a258','#a5652c'],
+ bun:{name:'크림빵 말랑이',short:'크림빵',nick:'크림이',form:'dome',tex:'bun',bw:58,bh:72,cp:.72,side:.34,kb:8,eye:.44,pal:['#ffc26c','#f39a3a','#b85e1e'],
    mat:{mode:'foam',follow:.08,squash:.42,k:34,c:11,stretch:.05,skew:.01,wob:0,spread:.8},idle:'slow',snd:'bread',
    feel:'폭삭 · 크림 뿌직',desc:'윤기 나는 빵 껍질 안에 크림이 들어 있다. 너무 세게 누르면 크림이 나올 것 같다.',touch:['크림 나와...!','폭삭~','촉촉!'],
    gift:{meal:true},giftText:'밥 먹으면 스트레스가 조금 풀려요'},
- butter:{name:'버터 말랑이',short:'버터',nick:'버터리',form:'box',tex:'butter',bw:56,bh:70,rr:14,eye:.5,pal:['#fff4b5','#f4d86a','#c9a834'],
+ butter:{name:'버터 말랑이',short:'버터',nick:'버터리',form:'box',tex:'butter',bw:56,bh:70,rr:14,eye:.5,pal:['#fff29e','#ffd64a','#d9a31d'],
    mat:{mode:'melt',follow:.45,squash:.4,k:44,c:14,stretch:.14,skew:.03,wob:4,spread:.9},idle:'melt',snd:'butter',
    feel:'매끈 · 사르르',desc:'네모나고 매끈하다. 손으로 오래 쥐고 있으면 사르르 녹는다.',touch:['사르르~','매끈!','녹는다...'],
    gift:{act:'exercise',d:{weight:-.1}},giftText:'운동하면 살이 잘 녹아요'},
- crunch:{name:'크런치 말랑이',short:'크런치',nick:'바삭이',form:'dome',tex:'crunch',bw:52,bh:86,cp:.6,side:.42,kb:3,eye:.52,pal:['#fff0a6','#efcb48','#b88f18'],
+ crunch:{name:'크런치 말랑이',short:'크런치',nick:'바삭이',form:'dome',tex:'crunch',bw:54,bh:86,cp:.6,side:.42,kb:4,eye:.52,alpha:.93,pal:['#dff4ff','#8fd0f6','#3f8cc6'],
    mat:{mode:'crunch',follow:.04,squash:.22,k:600,c:30,stretch:0,skew:.04,wob:40,spread:.7},idle:'breathe',snd:'crunch',
-   feel:'바삭 · 단단',desc:'설탕 껍질이 덮여 있어 누를 때마다 바삭바삭 소리가 난다. 생각보다 단단하다.',touch:['바삭!','바바삭!','부서진 거 아님!'],
+   feel:'바삭 · 알갱이 가득',desc:'하늘색 설탕 껍질 안에 바삭한 알갱이가 가득. 누를 때마다 바삭바삭 소리가 나고, 생각보다 단단하다.',touch:['바삭!','바바삭!','부서진 거 아님!'],
    gift:{act:'exercise',d:{str:1}},giftText:'운동하면 더 튼튼해져요'},
- cheese:{name:'치즈 말랑이',short:'치즈',nick:'치즈볼',form:'wedge',tex:'cheese',bw:56,bh:84,eye:.4,pal:['#ffe680','#f5c542','#c9961c'],
+ cheese:{name:'치즈 말랑이',short:'치즈',nick:'치즈볼',form:'wedge',tex:'cheese',bw:56,bh:84,eye:.4,pal:['#ffe57a','#ffbe2c','#d38e10'],
    mat:{mode:'string',follow:.2,squash:.38,k:85,c:10,stretch:.3,skew:.03,wob:12,spread:.8},idle:'breathe',snd:'cheese',
    feel:'쫀득 · 쭈욱 늘어남',desc:'구멍 송송 치즈 모양 스퀴시. 위로 당기면 피자 치즈처럼 쭈욱 늘어난다.',touch:['쭈우욱~','구멍 세지 마!','치즈~'],
    gift:{sub:'friends',d:{cha:1}},giftText:'친구랑 놀 때 매력이 더 올라요'},
- beads:{name:'알갱이 말랑이',short:'알갱이',nick:'몽글이',form:'ball',tex:'beads',bw:52,bh:96,eye:.56,alpha:.82,pal:['#ebe2ff','#b9a5ee','#7d63c4'],
+ beads:{name:'알갱이 말랑이',short:'알갱이',nick:'몽글이',form:'ball',tex:'beads',bw:52,bh:96,eye:.56,alpha:.82,pal:['#f0e6ff','#bca2f6','#7a56d8'],
    mat:{mode:'beads',follow:.3,squash:.36,k:250,c:9,stretch:.12,skew:.06,wob:40,spread:.8},idle:'breathe',snd:'beads',
    feel:'뽀글 · 몽글',desc:'투명한 몸속에 알갱이가 둥둥. 누르면 알갱이들이 뽀글뽀글 몰려다닌다.',touch:['뽀글뽀글!','몽글~','알갱이 간지러워'],
    gift:{sub:'acad',d:{int:1}},giftText:'학문을 배울 때 더 똑똑해져요'}
 };
 const SP_ORDER=['jelly','pudding','mochi','marsh','bread','bun','butter','crunch','cheese','beads'];
-function palOf(sp,hue,pal){if(pal)return pal;const S=SPECIES[sp]||SPECIES.jelly;if(S.pal)return S.pal;return [`hsl(${hue},58%,80%)`,`hsl(${hue},45%,57%)`,`hsl(${hue},38%,34%)`]}
+function palOf(sp,hue,pal){if(pal)return pal;const S=SPECIES[sp]||SPECIES.jelly;if(S.pal)return S.pal;return [`hsl(${hue},70%,76%)`,`hsl(${hue},60%,50%)`,`hsl(${hue},55%,32%)`]}
 const PATHS={
+  // 탱글한 젤리가 바닥에 살짝 눌려 앉은 모양: 아래 모서리가 둥글게 바깥으로 퍼진다
+  blob(sh){const {base,hw,h,top,k,S}=sh,x0=100-hw,x1=100+hw,cp=S.cp||.66;
+    return `M100 ${base+3}C${x0+hw*.3} ${base+4} ${x0-k} ${base+2} ${x0-k*.55} ${base-h*.2}C${x0+2} ${base-h*.58} ${100-hw*cp} ${top} 100 ${top}C${100+hw*cp} ${top} ${x1-2} ${base-h*.58} ${x1+k*.55} ${base-h*.2}C${x1+k} ${base+2} ${x1-hw*.3} ${base+4} 100 ${base+3}Z`},
   dome(sh){const {base,hw,h,top,k,S}=sh,x0=100-hw,x1=100+hw,cp=S.cp||.62,sd=S.side||.42;
     return `M${x0} ${base}C${x0-k} ${base-h*sd} ${100-hw*cp} ${top} 100 ${top}C${100+hw*cp} ${top} ${x1+k} ${base-h*sd} ${x1} ${base}Q100 ${base+7} ${x0} ${base}Z`},
   ball(sh){const {base,hw,h,top,k}=sh,x0=100-hw,x1=100+hw,my=base-h*.48;
@@ -2129,52 +2163,74 @@ function texSVG(sh){
   const shine=()=>'';
   switch(S.tex){
     case 'jelly':s=`<circle cx="${100-hw*.3}" cy="${base-h*.22}" r="3.2" fill="#fff" opacity=".35"/><circle cx="${100+hw*.42}" cy="${base-h*.38}" r="2.2" fill="#fff" opacity=".3"/>`+shine();break;
-    case 'pudding':{const y=top+h*.24;s=`<rect x="0" y="${top-5}" width="200" height="${y-top+5}" fill="#a65a26"/>`;for(let i=0;i<4;i++){s+=`<ellipse cx="${100-hw*.5+i*hw*.33+r()*6}" cy="${y}" rx="${4+r()*3}" ry="${5+r()*6}" fill="#a65a26"/>`}
+    case 'pudding':{const y=top+h*.24;s=`<rect x="0" y="${top-5}" width="200" height="${y-top+5}" fill="#b8541a"/>`;for(let i=0;i<4;i++){s+=`<ellipse cx="${100-hw*.5+i*hw*.33+r()*6}" cy="${y}" rx="${4+r()*3}" ry="${5+r()*6}" fill="#b8541a"/>`}
       s+=`<ellipse cx="${100-hw*.25}" cy="${top+h*.08}" rx="${hw*.18}" ry="2.6" fill="#fff" opacity=".35"/><ellipse cx="${100-hw*.48}" cy="${top+h*.55}" rx="4.5" ry="${h*.13}" fill="#fff" opacity=".4"/>`;break}
-    case 'mochi':for(let i=0;i<16;i++)s+=`<circle cx="${100-hw+r()*hw*2}" cy="${top+r()*h}" r="${.8+r()*1.2}" fill="#e5d9cb"/>`;s+=`<ellipse cx="${100-hw*.28}" cy="${top+h*.32}" rx="${hw*.36}" ry="${h*.2}" fill="#fff" opacity=".3"/>`;break;
+    case 'mochi':for(let i=0;i<16;i++)s+=`<circle cx="${100-hw+r()*hw*2}" cy="${top+r()*h}" r="${.8+r()*1.2}" fill="#f1dccb"/>`;s+=`<ellipse cx="${100-hw*.28}" cy="${top+h*.32}" rx="${hw*.36}" ry="${h*.2}" fill="#fff" opacity=".3"/>`;break;
     case 'marsh':s=`<rect x="${100-hw}" y="${top}" width="${hw*.38}" height="${h}" fill="#fff" opacity=".5"/><rect x="${100+hw*.55}" y="${top}" width="${hw*.45}" height="${h}" fill="#d29aac" opacity=".22"/><ellipse cx="100" cy="${top+5}" rx="${hw*.8}" ry="5" fill="#fff" opacity=".7"/>`;break;
-    case 'bread':s=`<rect x="${100-hw+6}" y="${top+h*.3}" width="${hw*2-12}" height="${h*.66}" rx="12" fill="#fbecd0"/>`;for(let i=0;i<14;i++)s+=`<ellipse cx="${100-hw*.8+r()*hw*1.6}" cy="${top+h*.38+r()*h*.52}" rx="${1+r()*1.6}" ry="${.7+r()}" fill="#e6c995"/>`;s+=`<ellipse cx="${100-hw*.35}" cy="${top+h*.1}" rx="${hw*.25}" ry="3" fill="#fff" opacity=".35"/>`;break;
+    case 'bread':s=`<rect x="${100-hw+6}" y="${top+h*.3}" width="${hw*2-12}" height="${h*.66}" rx="12" fill="#fff0c4"/>`;for(let i=0;i<14;i++)s+=`<ellipse cx="${100-hw*.8+r()*hw*1.6}" cy="${top+h*.38+r()*h*.52}" rx="${1+r()*1.6}" ry="${.7+r()}" fill="#f0bd6e"/>`;s+=`<ellipse cx="${100-hw*.35}" cy="${top+h*.1}" rx="${hw*.25}" ry="3" fill="#fff" opacity=".35"/>`;break;
     case 'bun':s=`<path d="M${100-hw*.36} ${top+h*.17}Q${100-hw*.18} ${top+h*.05} 100 ${top+h*.14}T${100+hw*.36} ${top+h*.13}" stroke="#fff6e0" stroke-width="7" fill="none" stroke-linecap="round"/>`;for(let i=0;i<7;i++)s+=`<ellipse cx="${100-hw*.55+r()*hw*1.1}" cy="${top+h*.28+r()*h*.18}" rx="1.8" ry="1" fill="#fff4dc" transform="rotate(${r()*80-40} ${100-hw*.55+r()*hw*1.1} ${top+h*.3})"/>`;s+=shine(.45);break;
     case 'butter':s=`<path d="M${100+hw*.1} ${top-2}L${100+hw*.48} ${top-2}L${100+hw*.48} ${top+h*.3}Q${100+hw*.4} ${top+h*.4} ${100+hw*.33} ${top+h*.24}Q${100+hw*.25} ${top+h*.14} ${100+hw*.17} ${top+h*.2}Q${100+hw*.1} ${top+h*.14} ${100+hw*.1} ${top}Z" fill="#fff9d9" opacity=".9"/><rect x="${100-hw+7}" y="${top+7}" width="${hw*.5}" height="5" rx="2.5" fill="#fff" opacity=".7"/><rect x="${100-hw+7}" y="${top+15}" width="${hw*.22}" height="4" rx="2" fill="#fff" opacity=".5"/>`;break;
-    case 'crunch':{let px=100-hw*.9,py=top+h*.3;for(let i=0;i<9;i++){const nx=100-hw*.9+(i+1)*hw*.2,ny=top+h*(.12+r()*.45);s+=`<path d="M${px} ${py}L${nx} ${ny}" stroke="#c39516" stroke-width="1.3" opacity=".7"/>`;if(r()<.6)s+=`<path d="M${nx} ${ny}L${nx+r()*10-5} ${ny+8+r()*12}" stroke="#c39516" stroke-width="1" opacity=".55"/>`;px=nx;py=ny}
-      for(let i=0;i<18;i++)s+=`<rect x="${100-hw+r()*hw*2}" y="${top+r()*h*.8}" width="2" height="2" fill="#fff" opacity=".85" transform="rotate(45 ${100} ${top})"/>`;s+=shine(.45);break}
+    case 'crunch':{const g=['#ffffff','#d6f1ff','#b2e2fb','#eaf8ff','#9fd6f4'];
+      for(let i=0;i<34;i++){const x=100+(r()*2-1)*hw*.82,y=top+h*.12+r()*h*.82,rr=1.6+r()*2.6,a=r()*180,c=g[i%g.length];
+        s+=`<path d="M${x-rr} ${y}L${x-rr*.3} ${y-rr*.9}L${x+rr} ${y-rr*.4}L${x+rr*.6} ${y+rr*.8}L${x-rr*.5} ${y+rr*.7}Z" fill="${c}" opacity="${.55+r()*.4}" stroke="#5aa6d6" stroke-opacity=".25" stroke-width=".6" transform="rotate(${a|0} ${x} ${y})"/>`}
+      let px=100-hw*.85,py=top+h*.3;for(let i=0;i<7;i++){const nx=px+hw*.24,ny=top+h*(.14+r()*.4);s+=`<path d="M${px} ${py}L${nx} ${ny}" stroke="#ffffff" stroke-width="1.4" opacity=".55"/>`;px=nx;py=ny}
+      break}
     case 'cheese':{const ry=base-h*.38;s=`<path d="M${100-hw} ${top+12}L${100+hw-8} ${ry-4}L${100+hw} ${ry+10}L${100-hw} ${top+28}Z" fill="#fff3b0" opacity=".75"/>`;[[.55,.62,8],[-.45,.72,6],[.1,.5,4.5],[-.7,.3,4],[.75,.82,3.5],[-.15,.85,5]].forEach(([dx,dy,r])=>{const cx=100+dx*hw,cy=top+h*dy;s+=`<ellipse cx="${cx}" cy="${cy}" rx="${r}" ry="${r*.85}" fill="#d9a82a" opacity=".55"/><ellipse cx="${cx}" cy="${cy+r*.35}" rx="${r*.7}" ry="${r*.4}" fill="#b8860f" opacity=".35"/>`});s+=`<ellipse cx="${100-hw*.55}" cy="${top+h*.4}" rx="5" ry="${h*.1}" fill="#fff" opacity=".45"/>`;break}
     case 'beads':{const cs=['#f7a8c4','#a8d8f0','#fde49a','#b8f0c8','#ffffff','#f4c3a0'];for(let i=0;i<16;i++){const x=100+(r()*2-1)*hw*.72,y=base-h*.48+(r()*2-1)*h*.36,rr=3+r()*2.4;s+=`<circle cx="${x}" cy="${y}" r="${rr}" fill="${cs[i%cs.length]}" opacity=".9"/><circle cx="${x-rr*.35}" cy="${y-rr*.35}" r="${rr*.3}" fill="#fff" opacity=".8"/>`}s+=shine(.55);break}
   }
   return s;
 }
 // 말랑이 2.5D 재질: 왼쪽 위 빛 → 몸에 밝은 면/어두운 면, 테두리 반사광, 바닥 반사, 재질별 광택
-const MATV={jelly:{gloss:1,tr:1,rim:.6,shade:.32,out:.32},pudding:{gloss:.7,rim:.5,shade:.3,out:.38},mochi:{gloss:0,matte:1,rim:.4,shade:.3,out:.2},
-  marsh:{gloss:.08,matte:1,rim:.45,shade:.28,out:.24},bread:{gloss:.12,rim:.32,shade:.3,out:.55},bun:{gloss:.55,rim:.4,shade:.3,out:.38},
-  butter:{gloss:.5,rim:.55,shade:.22,out:.32,satin:1},crunch:{gloss:.65,rim:.5,shade:.3,out:.38,sugar:1},cheese:{gloss:.25,rim:.42,shade:.28,out:.32},beads:{gloss:1,tr:1,rim:.6,shade:.26,out:.28}};
+// 색 유틸: hex·hsl 문자열을 HSL로 다뤄 채도·명도·색상을 조정
+function toHSL(c){
+  let m=String(c).match(/hsla?\(\s*([\d.]+)\s*,\s*([\d.]+)%\s*,\s*([\d.]+)%/);if(m)return [+m[1],+m[2]/100,+m[3]/100];
+  const [r,g,b]=hexRGB(c).map(v=>v/255),mx=Math.max(r,g,b),mn=Math.min(r,g,b),l=(mx+mn)/2;let h=0,s=0;
+  if(mx!==mn){const d=mx-mn;s=l>.5?d/(2-mx-mn):d/(mx+mn);h=mx===r?((g-b)/d+(g<b?6:0)):mx===g?(b-r)/d+2:(r-g)/d+4;h*=60}
+  return [h,s,l];
+}
+const hsl=(h,s,l)=>`hsl(${((h%360)+360)%360|0},${Math.round(clamp(s,0,1)*100)}%,${Math.round(clamp(l,0,1)*100)}%)`;
+function vivid(c,ds=0,dl=0,warm=0){const [h,s,l]=toHSL(c);let hh=h;if(warm&&s>.05){const t=h>200&&h<=330?h:(h>40&&h<200?h-warm:h+(h<40?warm*.5:0));hh=t}return hsl(hh,s+ds,l+dl)}
+function warmMix(c,t,to='#ffcf8a'){const [h,s,l]=toHSL(c),[h2,s2,l2]=toHSL(to);const dh=((h2-h+540)%360)-180;return hsl(h+dh*t,s+(s2-s)*t,l+(l2-l)*t)}
+// 말랑이 2.5D 재질 v2: 더 따뜻하고 선명한 장난감 톤
+// - 몸통: 4단 그라디언트(따뜻한 하이라이트 → 본색 → 진한 아랫색)
+// - 그늘: 회색 곱하기 대신 본색을 더 진하고 채도 높게 만든 '컬러 그늘' (color burn 느낌을 색 계산으로 안정적으로)
+// - 가장자리: 그늘 바로 안쪽에 방 빛이 되비치는 따뜻한 반사광 한 줄 → 장난감 같은 탱글함
+const MATV={jelly:{gloss:1,tr:1,rim:.6,shade:.42,out:.5},pudding:{gloss:.75,rim:.55,shade:.42,out:.5},mochi:{gloss:0,matte:1,rim:.45,shade:.34,out:.32},
+  marsh:{gloss:.1,matte:1,rim:.5,shade:.36,out:.36},bread:{gloss:.2,rim:.45,shade:.44,out:.6},bun:{gloss:.6,rim:.5,shade:.44,out:.5},
+  butter:{gloss:.55,rim:.6,shade:.36,out:.45,satin:1},crunch:{gloss:.75,tr:1,rim:.58,shade:.38,out:.45,sugar:1},cheese:{gloss:.3,rim:.5,shade:.42,out:.48},beads:{gloss:1,tr:1,rim:.6,shade:.38,out:.45}};
 let SP_KEY=null;
 function spKeyOf(S){if(!SP_KEY)SP_KEY=new Map(Object.entries(SPECIES).map(([k,v])=>[v,k]));return SP_KEY.get(S)||'jelly'}
 function bodyParts(sh,c,gid,cid,w){
   const S=sh.S,V=MATV[spKeyOf(S)]||MATV.jelly,{hw,h,top,base,d}=sh;
-  const F=gid+'f',H=gid+'h',A=gid+'o',U=gid+'u',SH=gid+'sh';
+  const top0=vivid(c[0],.14,0,4),mid=vivid(c[0],.18,-.04,2),bot=vivid(c[1],.16,-.03,0);
+  const deep=vivid(c[2],.28,-.06,10),hiW=warmMix(top0,.45,'#fff3c8'),bounce=warmMix(bot,.55,'#ffb07a'),rimC=warmMix(top0,.6,'#fffaf0');
+  const B=gid+'v',F=gid+'f',H=gid+'h',A=gid+'o',U=gid+'u',SH=gid+'sh';
   const hx=100-hw*.36,hy=top+h*.25;
-  let defs=`<defs>
-    <radialGradient id="${F}" cx=".34" cy=".26" r=".95"><stop offset="0" stop-color="#fff" stop-opacity="${V.matte?.22:.3}"/><stop offset=".42" stop-color="#fff" stop-opacity="0"/><stop offset=".74" stop-color="${c[2]}" stop-opacity="0"/><stop offset="1" stop-color="${c[2]}" stop-opacity="${V.shade*1.85}"/></radialGradient>
-    <radialGradient id="${H}"><stop offset="0" stop-color="#fff" stop-opacity="${V.matte?.35:.25+V.gloss*.6}"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
-    <linearGradient id="${A}" x1="0" y1="0" x2="0" y2="1"><stop offset=".62" stop-color="${c[2]}" stop-opacity="0"/><stop offset="1" stop-color="${c[2]}" stop-opacity="${V.shade*.9}"/></linearGradient>
-    <radialGradient id="${U}"><stop offset="0" stop-color="#fff" stop-opacity="${V.tr?.42:0}"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
-    <radialGradient id="${SH}"><stop offset="0" stop-color="${V.tr?c[1]:'#4a2c18'}" stop-opacity="${V.tr?.42:.3}"/><stop offset=".6" stop-color="${V.tr?c[1]:'#4a2c18'}" stop-opacity="${V.tr?.18:.12}"/><stop offset="1" stop-color="#4a2c18" stop-opacity="0"/></radialGradient></defs>`;
+  const defs=`<defs>
+    <linearGradient id="${B}" x1=".2" y1="0" x2=".55" y2="1"><stop offset="0" stop-color="${hiW}"/><stop offset=".28" stop-color="${top0}"/><stop offset=".68" stop-color="${mid}"/><stop offset="1" stop-color="${bot}"/></linearGradient>
+    <radialGradient id="${F}" cx=".33" cy=".25" r=".98"><stop offset="0" stop-color="${hiW}" stop-opacity="${V.matte?.25:.32}"/><stop offset=".4" stop-color="${hiW}" stop-opacity="0"/><stop offset=".7" stop-color="${deep}" stop-opacity="0"/><stop offset="1" stop-color="${deep}" stop-opacity="${V.shade*1.55}"/></radialGradient>
+    <radialGradient id="${H}"><stop offset="0" stop-color="#fffbea" stop-opacity="${V.matte?.4:.3+V.gloss*.6}"/><stop offset="1" stop-color="#fff6d8" stop-opacity="0"/></radialGradient>
+    <linearGradient id="${A}" x1="0" y1="0" x2="0" y2="1"><stop offset=".6" stop-color="${deep}" stop-opacity="0"/><stop offset="1" stop-color="${deep}" stop-opacity="${V.shade}"/></linearGradient>
+    <radialGradient id="${U}"><stop offset="0" stop-color="${hiW}" stop-opacity="${V.tr?.55:0}"/><stop offset="1" stop-color="${hiW}" stop-opacity="0"/></radialGradient>
+    <radialGradient id="${SH}"><stop offset="0" stop-color="${V.tr?bot:'#6a3a1c'}" stop-opacity="${V.tr?.45:.3}"/><stop offset=".6" stop-color="${V.tr?bot:'#6a3a1c'}" stop-opacity="${V.tr?.2:.12}"/><stop offset="1" stop-color="#6a3a1c" stop-opacity="0"/></radialGradient></defs>`;
   const bb=`x="${100-hw-24}" y="${top-24}" width="${hw*2+48}" height="${h+40}"`;
-  let s=defs+`<clipPath id="${cid}"><path d="${d}"/></clipPath><path d="${d}" fill="url(#${gid})" fill-opacity="${S.alpha||1}"/><g clip-path="url(#${cid})">${texSVG(sh)}`;
+  let s=defs+`<clipPath id="${cid}"><path d="${d}"/></clipPath><path d="${d}" fill="url(#${B})" fill-opacity="${S.alpha||1}"/><g clip-path="url(#${cid})">${texSVG(sh)}`;
   if(V.tr)s+=`<ellipse cx="100" cy="${top+h*.58}" rx="${hw*.72}" ry="${h*.42}" fill="url(#${U})"/>`;
   s+=`<rect ${bb} fill="url(#${F})"/><rect ${bb} fill="url(#${A})"/>`;
-  s+=`<ellipse cx="100" cy="${base+3}" rx="${hw*.78}" ry="${h*.08}" fill="#fff4e2" opacity="${V.tr?.22:.3}"/>`;
-  s+=`<path d="${d}" fill="none" stroke="#fff" stroke-opacity="${V.rim}" stroke-width="5" transform="translate(2.6 3.2)"/>`;
-  s+=`<path d="${d}" fill="none" stroke="${c[2]}" stroke-opacity="${V.shade}" stroke-width="8" transform="translate(-3.4 -4.2)"/>`;
-  if(V.matte)s+=`<ellipse cx="${hx+hw*.06}" cy="${hy+h*.06}" rx="${hw*.48}" ry="${h*.26}" fill="url(#${H})" transform="rotate(-18 ${hx} ${hy})"/>`;
+  // 컬러 그늘(오른쪽 아래 가장자리) → 바로 안쪽의 따뜻한 반사광 → 위쪽 테두리 빛
+  s+=`<path d="${d}" fill="none" stroke="${deep}" stroke-opacity="${V.shade*1.05}" stroke-width="10" transform="translate(-4 -5)"/>`;
+  s+=`<path d="${d}" fill="none" stroke="${bounce}" stroke-opacity="${V.tr?.35:.5}" stroke-width="3.2" transform="translate(-1.6 -2)"/>`;
+  s+=`<ellipse cx="100" cy="${base+2}" rx="${hw*.8}" ry="${h*.09}" fill="${bounce}" opacity="${V.tr?.3:.38}"/>`;
+  s+=`<path d="${d}" fill="none" stroke="${rimC}" stroke-opacity="${V.rim}" stroke-width="5" transform="translate(2.6 3.2)"/>`;
+  if(V.matte)s+=`<ellipse cx="${hx+hw*.06}" cy="${hy+h*.06}" rx="${hw*.5}" ry="${h*.27}" fill="url(#${H})" transform="rotate(-18 ${hx} ${hy})"/>`;
   else{s+=`<ellipse cx="${hx}" cy="${hy}" rx="${Math.max(9,hw*.3)}" ry="${h*.15}" fill="url(#${H})" transform="rotate(-24 ${hx} ${hy})"/>`;
-    if(V.satin)s+=`<path d="M${100-hw*.7} ${top+h*.42}Q100 ${top+h*.3} ${100+hw*.7} ${top+h*.42}" stroke="#fff" stroke-opacity=".28" stroke-width="5" fill="none" stroke-linecap="round"/>`;
-    if(V.gloss>=.55)s+=`<ellipse cx="${hx-hw*.06}" cy="${hy-h*.04}" rx="3.4" ry="2.6" fill="#fff" opacity=".92" transform="rotate(-24 ${hx} ${hy})"/>`;
-    if(V.gloss>=.9)s+=`<circle cx="${hx+hw*.12}" cy="${hy-h*.08}" r="1.6" fill="#fff" opacity=".85"/><path d="M${100+hw*.55} ${base-h*.5}q${hw*.12} ${h*.18} 0 ${h*.34}" stroke="#fff" stroke-opacity=".45" stroke-width="2.4" fill="none" stroke-linecap="round"/>`}
-  if(V.sugar){const r=seeded(hw*13);for(let i=0;i<10;i++){const x=100-hw*.8+r()*hw*1.6,y=top+h*(.1+r()*.6);s+=`<path d="M${x} ${y-2.6}l.9 1.7 1.7.9-1.7.9-.9 1.7-.9-1.7-1.7-.9 1.7-.9z" fill="#fff" opacity="${.5+r()*.4}"/>`}}
+    if(V.satin)s+=`<path d="M${100-hw*.7} ${top+h*.42}Q100 ${top+h*.3} ${100+hw*.7} ${top+h*.42}" stroke="#fffbe8" stroke-opacity=".32" stroke-width="5" fill="none" stroke-linecap="round"/>`;
+    if(V.gloss>=.55)s+=`<ellipse cx="${hx-hw*.06}" cy="${hy-h*.04}" rx="3.4" ry="2.6" fill="#fffdf2" opacity=".95" transform="rotate(-24 ${hx} ${hy})"/>`;
+    if(V.gloss>=.9)s+=`<circle cx="${hx+hw*.12}" cy="${hy-h*.08}" r="1.6" fill="#fffdf2" opacity=".9"/><path d="M${100+hw*.55} ${base-h*.5}q${hw*.12} ${h*.18} 0 ${h*.34}" stroke="#fffbe8" stroke-opacity=".5" stroke-width="2.4" fill="none" stroke-linecap="round"/>`}
+  if(V.sugar){const r=seeded(hw*13);for(let i=0;i<10;i++){const x=100-hw*.8+r()*hw*1.6,y=top+h*(.1+r()*.6);s+=`<path d="M${x} ${y-2.6}l.9 1.7 1.7.9-1.7.9-.9 1.7-.9-1.7-1.7-.9 1.7-.9z" fill="#fffdf2" opacity="${.55+r()*.4}"/>`}}
   s+=`</g>`;
-  if(w>=CFG.fat)s+=`<path d="M${100-hw*.5} ${base-h*.2}Q100 ${base-h*.05} ${100+hw*.5} ${base-h*.2}" fill="none" stroke="${c[2]}" stroke-opacity=".45" stroke-width="2" stroke-linecap="round"/>`;
-  return s+`<path d="${d}" fill="none" stroke="${c[2]}" stroke-opacity="${S.stroke?.75:V.out}" stroke-width="${S.stroke?S.stroke*.8:1.4}" stroke-linejoin="round"/>`;
+  if(w>=CFG.fat)s+=`<path d="M${100-hw*.5} ${base-h*.2}Q100 ${base-h*.05} ${100+hw*.5} ${base-h*.2}" fill="none" stroke="${deep}" stroke-opacity=".5" stroke-width="2" stroke-linecap="round"/>`;
+  return s+`<path d="${d}" fill="none" stroke="${deep}" stroke-opacity="${S.stroke?.8:V.out}" stroke-width="${S.stroke?S.stroke*.8:1.4}" stroke-linejoin="round"/>`;
 }
 function faceSVG(type,sh){
   const ey=sh.ey,lx=89,rx=111,my=ey+10,ink='#243026',mo='#6b3a3a';
@@ -2616,21 +2672,57 @@ function renderRel(){
   $('#pin').querySelectorAll('.rcard').forEach(b=>b.onclick=()=>{Sound.play('click');ui.openRel=ui.openRel===b.dataset.id?null:b.dataset.id;renderRel()});
 }
 function renderDex(){
-  const d=G.dex,evN=Object.keys(d.ev).length,endN=Object.keys(d.end).length,spR=SP_ORDER.filter(x=>d.sp[x]==='raised').length;
-  const sps=SP_ORDER.map(x=>{const S=SPECIES[x],st=d.sp[x],sh=(d.shiny||{})[x];
-    if(st==='raised')return `<div class="etile">${malangSVG({sp:x,face:'happy'})}<b>${S.short}</b><small>${S.feel}</small>${sh?`<small style="display:flex;align-items:center;justify-content:center;gap:2px">${ic('sparkle')}${SHINY[x].n}</small>`:''}</div>`;
-    if(st==='seen')return `<div class="etile">${malangSVG({sp:x})}<b>${S.short}</b><small>만나 봤어요</small></div>`;
-    return `<div class="etile sil">${malangSVG({sp:x})}<b>???</b><small>아직 몰라요</small></div>`}).join('');
+  const d=G.dex,evN=Object.keys(d.ev).length,endN=Object.keys(d.end).length,spR=SP_ORDER.filter(x=>d.sp[x]==='raised').length,v=d.viewed||{};
+  const pct=Math.round((spR+Object.keys(d.shiny||{}).length*.5+endN*.5)/(SP_ORDER.length+SP_ORDER.length*.5+ENDING_ORDER.length*.5)*100);
+  const sps=SP_ORDER.map((x,i)=>{const S=SPECIES[x],st=d.sp[x],sh=(d.shiny||{})[x];
+    if(st==='raised')return `<button class="etile sp" data-sp="${x}">${!v[x]?'<i class="newb">NEW</i>':''}<span class="no">${String(i+1).padStart(2,'0')}</span>${malangSVG({sp:x,face:'happy'})}<b>${S.short}</b><small>${S.feel}</small>${sh?`<span class="shb">${ic('sparkle')}</span>`:''}</button>`;
+    if(st==='seen')return `<button class="etile sp seen" data-sp="${x}"><span class="no">${String(i+1).padStart(2,'0')}</span>${malangSVG({sp:x})}<b>${S.short}</b><small>만나 봤어요</small></button>`;
+    return `<div class="etile sil"><span class="no">${String(i+1).padStart(2,'0')}</span>${malangSVG({sp:x})}<b>???</b><small>아직 몰라요</small></div>`}).join('');
   const ends=ENDING_ORDER.map(k=>d.end[k]?`<div class="etile">${ic(ENDINGS[k].icon)}${ENDINGS[k].title}</div>`:`<div class="etile no">${ic('qmark')}???</div>`).join('');
   const npcs=NPC_IDS.map(id=>d.npc[id]?`<div class="etile">${malangSVG({sp:NPCS[id].sp,pal:NPCS[id].pal,w:NPCS[id].w,face:NPCS[id].face,acc:NPCS[id].acc})}<b>${NPCS[id].name}</b></div>`:`<div class="etile no">${ic('qmark')}???</div>`).join('');
   const lin=G.lineage.length?G.lineage.slice().reverse().map(l=>`<div>${ic(ENDINGS[Object.keys(ENDINGS).find(k=>ENDINGS[k].title===l.title)]?.icon||'blob')}<span>${l.gen}대 ${esc(l.name||'말랑이')} (${l.persona&&PERSONA[l.persona]?PERSONA[l.persona].adj+' ':''}${SPECIES[l.species||'jelly'].short}) · ${l.title}</span></div>`).join(''):'<div class="sub">아직 다 자란 말랑이가 없어요.</div>';
   $('#pin').innerHTML=`${panelHead('dex','도감')}<div class="pb">
-   <div class="sec">말랑이 종류 ${spR}/${SP_ORDER.length}</div><div class="egrid">${sps}</div>
+   <div class="card box dexhead"><div class="ring" style="--p:${pct}"><b class="cute">${pct}%</b></div><div><b class="cute" style="font-size:19px">수집 기록</b><div class="sub">말랑이 ${spR}/${SP_ORDER.length}종 · 레어 ${Object.keys(d.shiny||{}).length}종 · 엔딩 ${endN}/${ENDING_ORDER.length}</div><div class="sub">카드를 누르면 크게 볼 수 있어요</div></div></div>
+   <div class="sec">말랑이 종류</div><div class="egrid">${sps}</div>
    <p class="hint" style="margin-top:8px">어떻게 키우고 누구와 친해지느냐에 따라 다음 캡슐에서 나오는 종류가 달라져요.</p>
    <div class="sec">엔딩 ${endN}/${ENDING_ORDER.length}</div><div class="egrid">${ends}</div>
    <div class="sec">만난 말랑이 ${Object.keys(d.npc).length}/${NPC_IDS.length}</div><div class="egrid">${npcs}</div>
    <div class="sec">겪은 사건 ${evN}/${EVENTS.length}</div><div class="card box"><div class="bar"><i style="width:${evN/EVENTS.length*100}%;background:var(--berry)"></i></div><div class="sub" style="margin-top:6px">다르게 키우면 다른 사건이 일어나요.</div></div>
    <div class="sec">역대 말랑이</div><div class="card box lin">${lin}</div></div>`;
+  $('#pin').querySelectorAll('[data-sp]').forEach(b=>b.onclick=()=>{Sound.play('pick');showSpecies(b.dataset.sp)});
+}
+// 도감 상세: 무대 위에 크게 올려놓고 감상하는 수집 보상 화면
+function showSpecies(sp,variant){
+  const d=G.dex,S=SPECIES[sp],st=d.sp[sp],list=SP_ORDER.filter(x=>d.sp[x]),idx=list.indexOf(sp),shinyOk=(d.shiny||{})[sp];
+  variant=variant&&shinyOk?variant:'base';
+  if(st==='raised'){d.viewed=d.viewed||{};if(!d.viewed[sp]){d.viewed[sp]=1;save()}}
+  const pal=variant==='shiny'?SHINY[sp].pal:null,name=variant==='shiny'?SHINY[sp].n+' 말랑이':S.name;
+  const lives=G.lineage.filter(l=>(l.species||'jelly')===sp),cur=G.malang.species===sp;
+  const bestP=Object.entries(SP_PERSONA[sp]||{}).sort((a,b)=>b[1]-a[1])[0];
+  const raised=st==='raised';
+  openOv(`<div class="showcase"><div class="sc-stage${variant==='shiny'?' shiny':''}" id="scStage"><div class="sc-rays"></div><div class="sc-rug"></div>
+      <button class="sc-mal" id="scMal" aria-label="${S.short} 만져 보기">${malangSVG({sp,pal,face:raised?'happy':'normal',w:5})}</button>
+      <span class="spk" style="left:18%;top:22%">${ic('sparkle')}</span><span class="spk" style="right:16%;top:16%;animation-delay:.5s">${ic('star')}</span>
+      <span class="sc-no cute">No.${String(SP_ORDER.indexOf(sp)+1).padStart(2,'0')}</span>
+      ${list.length>1?`<button class="rbtn sc-nav l" id="scPrev" aria-label="이전">${ic('back')}</button><button class="rbtn sc-nav r" id="scNext" aria-label="다음">${ic('back')}</button>`:''}</div>
+    <div class="ev-b"><div class="ev-t big">${name}</div>
+      ${shinyOk?`<div class="sc-var"><button class="${variant==='base'?'on':''}" data-v="base">기본</button><button class="${variant==='shiny'?'on':''}" data-v="shiny">${ic('sparkle')}레어</button></div>`:''}
+      <p class="ev-p">${S.desc}</p>
+      <div class="fxl">
+        <div>${ic('blob')}<span>촉감 · ${S.feel}</span></div>
+        ${raised?`<div>${ic('gift')}<span>타고난 재주 · ${S.giftText}</span></div>
+        <div>${ic('rel')}<span>자주 보이는 성격 · ${bestP?PERSONA[bestP[0]].n:'가지각색'}</span></div>
+        <div>${ic('trophy')}<span>키운 기록 · ${lives.length+(cur?1:0)}마리${cur?' (지금 키우는 중)':''}</span></div>`:`<div>${ic('npc:'+(NPC_IDS.find(id=>NPCS[id].sp===sp)||'popo'))}<span>친구로 만나 봤어요. 아직 직접 키워 보진 않았어요</span></div>`}
+      </div>
+      ${lives.length?`<div class="sc-hist">${lives.slice(-4).reverse().map(l=>`<div>${ic(ENDINGS[Object.keys(ENDINGS).find(k=>ENDINGS[k].title===l.title)]?.icon||'blob')}<span>${l.gen}대 ${esc(l.name||S.nick)}${l.shiny?' ✦':''}</span><em>${l.title}</em></div>`).join('')}</div>`:''}
+      <p class="sub" style="text-align:center;margin:10px 0 0">말랑이를 눌러 보세요</p>
+      <button class="tbtn wide" id="scClose">닫기</button></div></div>`);
+  const mal=$('#scMal');
+  mal.onclick=()=>{mal.classList.remove('boing');void mal.offsetWidth;mal.classList.add('boing');Sound.feel(S.snd,'press');setTimeout(()=>Sound.feel(S.snd,'release',.5),180)};
+  $('#scClose').onclick=()=>{Sound.play('click');closeOv();if(!$('#panel').hidden&&$('#panel').dataset.name==='dex')renderDex()};
+  document.querySelectorAll('.sc-var [data-v]').forEach(b=>b.onclick=()=>{Sound.play(b.dataset.v==='shiny'?'good':'click');showSpecies(sp,b.dataset.v)});
+  if($('#scPrev')){$('#scPrev').onclick=()=>{Sound.play('pick');showSpecies(list[(idx-1+list.length)%list.length])};$('#scNext').onclick=()=>{Sound.play('pick');showSpecies(list[(idx+1)%list.length])}}
+  if(raised)Sound.play('meet');
 }
 function isDark(){const t=localStorage.getItem(TKEY);return t?t==='dark':matchMedia('(prefers-color-scheme: dark)').matches}
 function applyTheme(){let t=null;try{t=localStorage.getItem(TKEY)}catch(e){}if(t)document.documentElement.setAttribute('data-theme',t);else document.documentElement.removeAttribute('data-theme')}
@@ -2977,7 +3069,7 @@ const SHINY={
   bun:{n:'멜론빵',pal:['#ecf5b8','#c3d96e','#88a03a']},
   butter:{n:'소금 버터',pal:['#fffcf2','#efe5cc','#bfae84']},
   cheese:{n:'블루 치즈',pal:['#f4f1e8','#d9d4c2','#7f93b5']},
-  crunch:{n:'블루 크런치',pal:['#d8edff','#8cc1f0','#4f86bd']},
+  crunch:{n:'딸기 크런치',pal:['#ffe3ec','#ff9fbd','#d65a85']},
   beads:{n:'은하수 알갱이',pal:['#d6e0ff','#7f8fe0','#3e4aa0']}
 };
 const SND_HINT={jelly:'...출렁?',pudding:'...부르르?',mochi:'...쫀득?',marsh:'...폭신?',bread:'...푹?',bun:'...푹신?',butter:'...미끌?',crunch:'...바삭?',cheese:'...쭈욱?',beads:'...뽀글?'};
