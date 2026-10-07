@@ -83,7 +83,7 @@ button:focus-visible,input:focus-visible{outline:2.5px solid var(--berry);outlin
 .tend .ic{width:16px;height:16px}
 
 /* 무대 */
-#stage{--sh:clamp(240px,40vh,360px);position:relative;height:var(--sh);margin:0 12px;border-radius:28px;overflow:hidden;background:#f6dcc0;
+#stage{--sh:clamp(280px,47vh,440px);position:relative;height:var(--sh);margin:0 12px;border-radius:28px;overflow:hidden;background:#f6dcc0;
   box-shadow:var(--lip),inset 0 0 0 2px var(--line);transition:height .35s cubic-bezier(.3,1.2,.5,1);touch-action:none}
 body.mode-plan #stage{--sh:clamp(170px,25vh,230px)}
 body.mode-run #stage{--sh:clamp(260px,44vh,410px)}
@@ -504,7 +504,7 @@ body.mode-run #mini{display:grid!important}
 .etile.tt.r3{box-shadow:0 3px 0 rgba(62,52,49,.12),inset 0 0 0 2.5px #f6c94c;background:linear-gradient(#fffaf3,#fff4d6)}
 .etile.sil svg.toy{filter:brightness(0);opacity:.15}
 .toyhead{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.toyhead .tbtn{height:46px;font-size:16px;padding:0 14px}
+.toyhead .tbtn{height:46px;font-size:16px;padding:0 14px;white-space:nowrap;flex:none}
 .set{padding:10px 12px;margin-bottom:8px}.set.done{box-shadow:var(--lip),inset 0 0 0 2.5px #f6c94c}
 .set-h{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
 .set-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
@@ -544,6 +544,118 @@ body.mode-run #mini{display:grid!important}
 .mtoy.r3{background:#fff4d6;color:#3e3431}.mtoy.on{box-shadow:0 3px 0 rgba(62,52,49,.14),inset 0 0 0 3px var(--berry);transform:translateY(-3px)}
 .mtoy .chk{position:absolute;top:-6px;right:-4px;width:20px;height:20px;border-radius:50%;background:var(--berry);color:#fff;display:grid;place-items:center}
 .mtoy .chk .ic{width:14px;height:14px}
+
+/* =========================================================
+   방 공간 + 반투명 유리 패널 (레퍼런스의 분위기만 참고)
+   ========================================================= */
+:root{
+  --wall-a:#f3e6d5;--wall-b:#ead8c2;--floor-a:#e4cdb0;--floor-b:#d6b896;--beam:rgba(255,251,240,.55);--winglow:rgba(255,252,243,.85);
+  --glass:rgba(255,251,246,.58);--glass-2:rgba(255,251,246,.38);--glass-line:rgba(255,255,255,.7);--glass-sh:0 10px 28px rgba(122,84,52,.13),0 2px 6px rgba(122,84,52,.06);
+  --coral-a:#ffa69a;--coral-b:#f2708b;--rugA:#fffbf3;--rugB:#f1e6d6;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --wall-a:#3a2f2c;--wall-b:#2f2624;--floor-a:#3b2f28;--floor-b:#2d231e;--beam:rgba(255,214,160,.10);--winglow:rgba(176,196,236,.28);
+  --glass:rgba(52,42,42,.58);--glass-2:rgba(52,42,42,.38);--glass-line:rgba(255,240,230,.14);--glass-sh:0 10px 28px rgba(0,0,0,.35);--rugA:#e9dfd2;--rugB:#cbbca9}}
+:root[data-theme="dark"]{--wall-a:#3a2f2c;--wall-b:#2f2624;--floor-a:#3b2f28;--floor-b:#2d231e;--beam:rgba(255,214,160,.10);--winglow:rgba(176,196,236,.28);
+  --glass:rgba(52,42,42,.58);--glass-2:rgba(52,42,42,.38);--glass-line:rgba(255,240,230,.14);--glass-sh:0 10px 28px rgba(0,0,0,.35);--rugA:#e9dfd2;--rugB:#cbbca9}
+body{background:var(--floor-b)}
+#app{position:relative;isolation:isolate;--hz:420px}
+#room{position:absolute;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+#room .wall{position:absolute;left:0;right:0;top:0;height:var(--hz);transition:height .4s ease;
+  background:radial-gradient(ellipse 70% 55% at 18% 22%,var(--winglow),transparent 60%),radial-gradient(ellipse 60% 40% at 85% 75%,rgba(255,236,210,.35),transparent 70%),linear-gradient(var(--wall-a),var(--wall-b))}
+#room .win{position:absolute;left:6%;top:70px;width:30%;height:min(34vh,260px);border-radius:22px 22px 8px 8px;filter:blur(1.5px);opacity:.9;
+  background:linear-gradient(170deg,var(--winglow),rgba(255,255,255,.12));box-shadow:inset 0 0 0 7px rgba(255,255,255,.28)}
+#room .win::before,#room .win::after{content:"";position:absolute;background:rgba(255,255,255,.35)}
+#room .win::before{left:50%;top:0;bottom:0;width:6px;margin-left:-3px}#room .win::after{top:46%;left:0;right:0;height:6px}
+#room .beams{position:absolute;left:-10%;top:0;width:90%;height:var(--hz);opacity:.9;transition:height .4s ease;
+  background:repeating-linear-gradient(118deg,transparent 0 46px,var(--beam) 46px 96px,transparent 96px 170px);
+  -webkit-mask-image:linear-gradient(160deg,#000 10%,transparent 75%);mask-image:linear-gradient(160deg,#000 10%,transparent 75%);animation:beam 9s ease-in-out infinite alternate}
+@keyframes beam{to{opacity:.55;transform:translateX(14px)}}
+.amb-sway2{animation:beam 9s ease-in-out infinite alternate}
+#room .trim{position:absolute;left:0;right:0;top:calc(var(--hz) - 10px);height:10px;background:linear-gradient(rgba(255,255,255,.25),rgba(120,80,50,.08));transition:top .4s ease}
+#room .floor{position:absolute;left:0;right:0;top:var(--hz);bottom:0;transition:top .4s ease;overflow:hidden;
+  background:radial-gradient(ellipse 60% 30% at 50% 0,rgba(255,248,236,.55),transparent 70%),linear-gradient(var(--floor-a),var(--floor-b))}
+#room .floor::before{content:"";position:absolute;left:-60%;right:-60%;top:0;height:140%;transform-origin:50% 0;transform:perspective(260px) rotateX(58deg);
+  background:repeating-linear-gradient(90deg,rgba(110,72,40,.10) 0 2px,transparent 2px 74px);opacity:.8}
+#room .plant{position:absolute;right:5%;top:calc(var(--hz) - 118px);width:64px;height:118px;filter:blur(.6px);opacity:.92;transition:top .4s ease}
+#room .vig{position:absolute;inset:0;background:radial-gradient(ellipse 80% 70% at 50% 40%,transparent 55%,rgba(90,58,34,.16))}
+
+/* 무대: 박스를 없애고 방 안에 바로 선다 */
+#stage{background:transparent!important;box-shadow:none!important;border-radius:0;margin:0 8px;overflow:visible}
+#stage::after{display:none}
+#scenery{border-radius:30px;overflow:hidden;-webkit-mask-image:radial-gradient(ellipse 78% 78% at 50% 48%,#000 62%,transparent 100%);mask-image:radial-gradient(ellipse 78% 78% at 50% 48%,#000 62%,transparent 100%)}
+#stage.at-home #scenery{display:none}
+#stage:not(.at-home) #mlgRug{display:none}
+.rbtn{width:44px;height:44px;border-radius:50%;background:var(--glass);-webkit-backdrop-filter:blur(14px) saturate(1.2);backdrop-filter:blur(14px) saturate(1.2);box-shadow:var(--glass-sh),inset 0 1px 0 var(--glass-line)}
+.rbtn:active{transform:scale(.92);box-shadow:var(--glass-sh)}
+#placeTag{background:var(--glass);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-radius:999px;box-shadow:var(--glass-sh),inset 0 1px 0 var(--glass-line)}
+
+/* HUD */
+.plate,.coin{background:var(--glass);-webkit-backdrop-filter:blur(16px) saturate(1.2);backdrop-filter:blur(16px) saturate(1.2);box-shadow:var(--glass-sh),inset 0 1px 0 var(--glass-line);color:var(--ink)}
+.coin{color:var(--ink)}
+.plate-av{background:rgba(255,255,255,.55)}
+.weekbar{justify-content:center;gap:10px;padding:2px 16px 4px;flex-wrap:wrap}
+.weekbar .beads{flex:0 1 250px;padding:6px 8px;border-radius:999px;background:var(--glass);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:var(--glass-sh),inset 0 1px 0 var(--glass-line)}
+.beads i{height:8px;background:rgba(255,255,255,.55);box-shadow:inset 0 1px 2px rgba(110,72,40,.15)}
+.beads i.on{background:linear-gradient(#ffc27a,#ff8f6a);box-shadow:inset 0 -2px 0 rgba(0,0,0,.08),inset 0 2px 0 rgba(255,255,255,.4)}
+.beads i.now{background:linear-gradient(#fff0a8,#ffd25a)}
+.beads i.chp{box-shadow:inset 0 1px 2px rgba(110,72,40,.15),0 0 0 2px rgba(255,210,90,.75)}
+.tend{color:var(--ink);opacity:.8}
+body.mode-plan .weekbar{display:none}
+
+/* 유리 패널 공통 */
+.card,.tile,.ctab,.scard,.sinfo,.ch,.etile,.tbtn.ghost,.mtoy{background:var(--glass)!important;-webkit-backdrop-filter:blur(16px) saturate(1.15);backdrop-filter:blur(16px) saturate(1.15);
+  box-shadow:var(--glass-sh),inset 0 1px 0 var(--glass-line)!important}
+.card{border-radius:26px}
+.tile{border-radius:20px}
+.tile:not(.empty){background:linear-gradient(rgba(255,255,255,.35),rgba(255,255,255,.08)),var(--tc)!important}
+.tile .td{opacity:.85}
+.tile.sel,.tile.now{box-shadow:var(--glass-sh),0 0 0 3px #fff,0 0 0 6px rgba(242,112,139,.55)!important}
+.ctab.on{background:linear-gradient(rgba(255,255,255,.4),rgba(255,255,255,.1)),var(--cc)!important;transform:translateY(1px)}
+.scard{border-radius:22px}
+.scard.on{box-shadow:var(--glass-sh),0 0 0 3px rgba(242,112,139,.6)!important}
+.scard.lock{opacity:.85}
+.sc-ic{box-shadow:inset 0 -3px 0 rgba(0,0,0,.06),inset 0 3px 0 rgba(255,255,255,.55),0 4px 10px rgba(122,84,52,.12)}
+.sinfo{border-radius:20px}
+.ch{border-radius:20px}
+.ch.picked{background:linear-gradient(rgba(255,255,255,.5),rgba(255,255,255,.2)),#ffd3dc!important}
+
+/* 상태 바: 반짝이는 젤리 막대 */
+.cbar,.bar{background:rgba(255,255,255,.5);box-shadow:inset 0 1px 3px rgba(110,72,40,.18)}
+.cbar i,.bar i{box-shadow:inset 0 -3px 0 rgba(0,0,0,.08),inset 0 3px 0 rgba(255,255,255,.45)}
+.wgauge{box-shadow:inset 0 1px 3px rgba(110,72,40,.2),0 0 0 3px rgba(255,255,255,.35)}
+.abtog{border-top-color:rgba(255,255,255,.55)}
+
+/* 버튼: 말캉한 코랄 젤리 */
+.tbtn{background:linear-gradient(180deg,var(--coral-a),var(--coral-b));border-radius:24px;
+  box-shadow:0 8px 20px rgba(242,112,139,.32),inset 0 2px 0 rgba(255,255,255,.55),inset 0 -4px 0 rgba(160,40,70,.15)}
+.tbtn:active{transform:scale(.96,.92);box-shadow:0 3px 10px rgba(242,112,139,.3),inset 0 2px 0 rgba(255,255,255,.4)}
+.tbtn.ghost{color:var(--ink)}
+
+/* 하단 독: 아이콘이 버튼 위로 살짝 튀어나온 말랑한 버튼 */
+.dock{display:grid;grid-template-columns:1fr 1.7fr 1fr;gap:10px;align-items:end;width:100%;padding-top:22px}
+.dk{position:relative;height:74px;border-radius:30px 34px 28px 32px/30px 28px 34px 30px;background:var(--glass);-webkit-backdrop-filter:blur(16px) saturate(1.2);backdrop-filter:blur(16px) saturate(1.2);
+  box-shadow:var(--glass-sh),inset 0 1px 0 var(--glass-line);display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:12px;font-family:"Jua",sans-serif;font-size:15px;color:var(--ink);transition:transform .1s}
+.dk:active{transform:scale(.95,.9)}
+.dk .pop{position:absolute;top:-24px;left:50%;width:50px;height:50px;transform:translateX(-50%);filter:drop-shadow(0 6px 8px rgba(122,84,52,.25));animation:popbob 3s ease-in-out infinite}
+.dk .pop .ic{width:100%;height:100%}
+@keyframes popbob{50%{transform:translateX(-50%) translateY(-4px)}}
+.dk.main{height:86px;background:linear-gradient(180deg,rgba(255,170,160,.9),rgba(242,112,139,.92));color:#fff;font-size:18px;box-shadow:0 12px 26px rgba(242,112,139,.35),inset 0 2px 0 rgba(255,255,255,.55),inset 0 -5px 0 rgba(160,40,70,.14)}
+.dk.main .pop{top:-30px;width:60px;height:60px}
+.dk.main small{font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",sans-serif;font-size:11.5px;opacity:.9;font-weight:700;margin-top:1px}
+.dk .dot{position:absolute;top:6px;right:16px;width:12px;height:12px;border-radius:50%;background:var(--berry);border:2px solid #fff}
+.pop-glow{position:absolute;inset:-6px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.75),transparent 70%);z-index:-1}
+
+/* 시트와 패널도 유리처럼 */
+#ov{background:rgba(70,45,30,.28);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+#ovCard{background:rgba(255,251,246,.9);-webkit-backdrop-filter:blur(22px) saturate(1.2);backdrop-filter:blur(22px) saturate(1.2);box-shadow:0 -10px 40px rgba(90,58,34,.18),inset 0 1px 0 rgba(255,255,255,.9)}
+#panel{background:linear-gradient(var(--wall-a),var(--floor-b))}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) #ovCard{background:rgba(44,36,38,.92)}}
+:root[data-theme="dark"] #ovCard{background:rgba(44,36,38,.92)}
+
+.psn{margin-top:12px;padding:12px 14px;border-radius:18px;background:linear-gradient(135deg,#fff4dc,#ffe6ee);color:#3e3431;display:flex;flex-direction:column;gap:3px;text-align:center}
+.psn b{font-size:18px}.psn .sub{color:#7a6a5e}
+#tray{margin-top:4px}
 @media (prefers-reduced-motion: reduce){
   #mlgAnim,.eye,.chomp,.sweat,#prop.show,.slime .sb,.spk,[class^="amb-"],[class*=" amb-"],.tile.now,.beads i.now{animation-duration:0s!important;animation-iteration-count:1!important}
 }
@@ -552,6 +664,9 @@ body.mode-run #mini{display:grid!important}
 </head>
 <body class="mode-home">
 <div id="app">
+  <div id="room" aria-hidden="true"><div class="wall"></div><div class="win"></div><div class="beams"></div><div class="trim"></div><div class="floor"></div>
+    <svg class="plant" viewBox="0 0 64 118"><path d="M18 92h28l-4 24H22z" fill="#e7a98a"/><path d="M32 92C30 70 20 58 10 52c10-2 20 6 22 18 0-16 6-30 20-36-6 12-10 26-14 42 4-10 12-16 22-16-10 6-16 18-18 32z" fill="#9cc98a" opacity=".85"/></svg>
+    <div class="vig"></div></div>
   <header class="hud">
     <button class="plate" id="plate" aria-label="이름 바꾸기">
       <span class="plate-av" id="plateAv"></span>
@@ -559,20 +674,22 @@ body.mode-run #mini{display:grid!important}
     </button>
     <div class="coin" aria-label="돈"><span id="coinIc"></span><b id="money" class="cute">0</b><span class="fl" data-fl="money"></span></div>
   </header>
-  <div class="weekbar"><div class="beads" id="beads"></div><span class="tend" id="mTend"></span></div>
-
-  <div id="stage">
+  <div id="stage" class="at-home">
     <div id="scenery"></div>
     <div id="placeTag" hidden></div>
     <svg id="mlg" viewBox="-30 0 260 200" preserveAspectRatio="xMidYMax meet" aria-label="말랑이">
       <defs><linearGradient id="gMain" x1="0" y1="0" x2="0" y2="1"><stop id="gm1" offset="0"/><stop id="gm2" offset="1"/></linearGradient></defs>
-      <ellipse id="mlgShadow" cx="100" cy="172" rx="60" ry="7" fill="#3e2a20" opacity=".18"/>
+      <g id="mlgRug"><defs><radialGradient id="rugG" cx=".5" cy=".4" r=".6"><stop offset="0" style="stop-color:var(--rugA)"/><stop offset="1" style="stop-color:var(--rugB)"/></radialGradient></defs>
+        <ellipse cx="100" cy="181" rx="126" ry="20" fill="#5a3a20" opacity=".08"/>
+        <ellipse cx="100" cy="176" rx="122" ry="18" fill="url(#rugG)"/>
+        <ellipse cx="100" cy="176" rx="121" ry="17.5" fill="none" style="stroke:var(--rugB)" stroke-width="5" stroke-dasharray="1.2 3.2" stroke-linecap="round"/>
+        <ellipse cx="100" cy="175" rx="100" ry="12" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="2" stroke-dasharray="2 5" stroke-linecap="round"/></g>
+      <ellipse id="mlgShadow" cx="100" cy="172" rx="60" ry="10" fill="url(#gMainsh)"/>
+      <ellipse id="mlgAO" cx="100" cy="171" rx="48" ry="3.2" fill="#3e2a20" opacity=".22"/>
       <ellipse id="mlgPlate" cx="100" cy="171" rx="70" ry="7" fill="#fffaf2" stroke="#e5d8c8" stroke-width="1.5" style="display:none"/>
       <g id="mlgAge"><g id="mlgAnim" class="a-idle"><g id="mlgInner"></g></g></g>
     </svg>
     <div class="stage-nav">
-      <button class="rbtn" data-open="rel" aria-label="관계"><span class="ic-slot" data-ic="rel"></span><i class="dot" id="relDot" hidden></i></button>
-      <button class="rbtn" data-open="toys" aria-label="장난감 상자"><span class="ic-slot" data-ic="toybox"></span></button>
       <button class="rbtn" data-open="dex" aria-label="도감"><span class="ic-slot" data-ic="dex"></span></button>
       <button class="rbtn" data-open="settings" aria-label="설정"><span class="ic-slot" data-ic="gear"></span></button>
     </div>
@@ -701,7 +818,96 @@ const LINES={
   toy:['이 장난감, 추억이 많네.','오랜만에 놀아 볼까.'],evGood:['좋은 하루였어.','이런 날도 있구나.'],evBad:['괜찮아, 이것도 경험이야.','다음엔 더 잘할 수 있어.'],
   weekStart:['다녀올게.','이번 주도 잘 부탁해.'],stageUp:['어른이 됐어. 그동안 고마워.'],pick:['좋은 선택이야.','그래, 해 보자.','음, 그것도 괜찮겠다.']}
 };
-function talk(key){const st=stageOf(G.week).id,a=(LINES[st]&&LINES[st][key])||LINES.kid[key]||['...'];return pick(a)}
+/* ---------- 말랑이 성격: 같은 종류라도 태어날 때마다 성격이 다르다 (동물의숲 주민처럼) ----------
+   tic: 말버릇 / like·dis: 좋아하는·싫어하는 활동(카테고리나 세부 활동) / toy: 좋아하는 장난감 취향
+   성장 단계 말투(LINES)와 섞이되, 성격 대사가 중심이 되고 말버릇은 어릴수록 자주 나온다 */
+const PERSONA={
+ sunny:{n:'해맑음',adj:'해맑은',tic:'말랑',desc:'뭐든 좋아하고 뭐든 신나는 아이',like:['play','exercise'],dis:['rest'],toy:['cute','colorful'],L:{
+  touch:['꺄하하 간지러워!','더더! 또 해 줘!','나 지금 엄청 행복해!'],touchNo:['오늘은... 조금만 나중에!','헤헤, 지금은 쉬는 중!'],
+  idleHappy:['오늘 하늘 완전 예쁘다!','나 방금 노래 지었어! 말랑말랑~','뭐 하고 놀까? 뭐 하고 놀까?'],idleTired:['조금 지쳤지만 괜찮아!','헤헤... 졸려도 웃을 거야'],
+  idleStress:['웃는 것도 힘든 날이 있네...','오늘은 좀... 안아 줄래?'],idleChubby:['동글동글해서 더 귀엽지 않아?','굴러다니기 딱 좋아!'],idleBored:['심심해! 심심해!','우리 같이 뭐 하자!'],
+  love:['이거 완전 좋아!!','최고의 하루야!','또 하고 싶어!'],hate:['으으... 그래도 해 볼게!','이건 조금 안 신나...'],
+  study:['공부도 재밌네!','머리가 반짝반짝해!'],exercise:['달려라 말랑이!','땀나는 거 좋아!'],play:['꺄르르! 너무 재밌어!','친구들이랑 노는 게 최고야!'],work:['일도 신나게!','손님들이 웃어 줬어!'],rest:['쉬는 것도 좋지만... 놀고 싶다!','빨리 내일 됐으면!'],
+  meal:['잘 먹겠습니다아!','이거 진짜 맛있어!'],binge:['간식은 행복이야!','한 개만... 한 개만 더!'],rebel:['오늘은 놀래! 땡땡이!','나도 쉬고 싶은 날이 있어!'],
+  toy:['우와 이거 뭐야 뭐야!','같이 놀자!!'],evGood:['오늘 진짜 최고였어!','나 잘했지? 잘했지?'],evBad:['괜찮아! 다음엔 잘할 거야!','으앙... 그래도 재밌었어'],
+  meet:['우리 친구 하자, {n}!','{n}! 너무 좋아!'],weekStart:['출발~! 신난다!','이번 주도 재밌게 보내자!'],weekGood:['이번 주 완전 대박이었어!','나 쑥쑥 크고 있어!'],weekTired:['좀 힘들었지만 그래도 웃어!'],
+  pick:['좋아 좋아!','그거 재밌겠다!'],bye:['울지 마! 나 진짜 행복했어!'],hello:['안녕! 나랑 놀자!'],stageUp:['나 컸다! 보여? 보여?']}},
+ lazy:{n:'느긋보',adj:'느긋한',tic:'냠냐',desc:'먹고 자는 게 제일 좋은 느긋한 아이',like:['rest','home','nap','comic'],dis:['exercise'],toy:['food','squishy'],L:{
+  touch:['으음... 거기 좋다~','계속... 계속 해 줘~','말랑... 녹는다~'],touchNo:['지금 자는 중이야~','나중에... 나중에~'],
+  idleHappy:['아무것도 안 하는 게 최고야~','햇볕 따뜻하다~','간식 시간 아직이야?'],idleTired:['하아아암... 졸려~','오늘은 이불 밖은 위험해~'],
+  idleStress:['너무 피곤해... 아무것도 하기 싫어~','그냥 누워 있을래...'],idleChubby:['동그란 게 편해~','배가 폭신해서 베개로 딱이야~'],idleBored:['심심하면... 자면 돼~','뭐 먹을 거 없나~'],
+  love:['이게 바로 행복이지~','오늘은 최고의 날~'],hate:['꼭... 해야 돼~?','숨차... 나 녹아~'],
+  study:['글자가... 자장가 같아~','음냐... 아 공부 중이었지'],exercise:['헥헥... 이건 너무해~','다리... 아 원래 없지~'],play:['노는 건 좋은데 천천히~','헤헤 재밌다~'],work:['일하면 간식 사 먹어야지~','퇴근은 언제야~'],rest:['이불이랑 결혼할래~','쿨쿨... 최고야~'],
+  meal:['기다렸어~ 냠냠','한 그릇 더~'],binge:['간식은 다른 배로 들어가~','멈출 수가 없어~'],rebel:['오늘은 쉬는 날로 할래~','안 갈래... 이불이 안 놔 줘~'],
+  toy:['이거 베고 자도 돼~?','말랑하다~ 졸리다~'],evGood:['오~ 잘 풀렸다~','이 정도면 간식 받아도 되지~?'],evBad:['괜찮아~ 자고 나면 잊어~','에이~ 그럴 수도 있지~'],
+  meet:['{n}... 간식 좋아해~?','같이 낮잠 잘래, {n}~?'],weekStart:['벌써 월요일이야~?','천천히 다녀올게~'],weekGood:['꽤 열심히 했다~ 그러니까 쉬자~'],weekTired:['너무 바빴어~ 다음 주는 쉬자~'],
+  pick:['음... 그래~','그거 힘들어~?'],bye:['고마웠어~ 꿈에서도 같이 낮잠 자자~'],hello:['안녕~ 간식 있어~?'],stageUp:['컸다~ 그만큼 많이 먹어야겠다~']}},
+ grumpy:{n:'투덜이',adj:'투덜대는',tic:'칫',desc:'겉으론 툴툴, 속은 누구보다 말랑한 아이',like:['study','rest'],dis:['play'],toy:['cool','weird'],L:{
+  touch:['...뭐야. 하지 마. ...조금만 더.','흥, 간지럽거든.','딱히 좋은 건 아니야.'],touchNo:['건드리지 마.','지금 기분 별로라고.'],
+  idleHappy:['...나쁘지 않네. 오늘.','흥, 날씨가 좀 괜찮군.','...그냥 있는 거야. 신경 쓰지 마.'],idleTired:['피곤해. 말 시키지 마.','하... 귀찮아.'],
+  idleStress:['다 짜증 나.','...좀 내버려 둬.'],idleChubby:['살 얘기 하면 굴러갈 거야.','...거울 치워.'],idleBored:['...심심한 거 아니거든.','할 거 없으면 그냥 있자.'],
+  love:['...이건 좀 괜찮네.','흥, 또 해도 되고.'],hate:['이걸 왜 해야 되는데.','시끄러워...'],
+  study:['...혼자 하는 건 괜찮아.','이 정도는 쉽지.'],exercise:['땀 싫어.','...기록은 깼어. 별거 아냐.'],play:['시끄러운 데 싫은데.','...뭐, 재밌긴 했어.'],work:['돈은 중요하니까.','손님한테 웃는 거 힘들어.'],rest:['...좋다. 말 걸지 마.','이게 진짜 휴식이지.'],
+  meal:['...맛있네.','잘 먹을게. 고맙다는 건 아니고.'],binge:['오늘은 그냥 먹을 거야.','...뭐. 먹으면 안 돼?'],rebel:['안 가. 끝.','오늘은 내 맘대로 할 거야.'],
+  toy:['...애들 거 아니야? ...한 번만.','흥. 이거 생각보다 괜찮네.'],evGood:['...당연하지.','흥, 운이 좋았을 뿐이야.'],evBad:['...말 시키지 마.','다음엔 안 져.'],
+  meet:['{n}? ...뭐, 나쁘진 않네.','...{n}. 이름은 외워 둘게.'],weekStart:['...다녀올게.','이번 주도 가야 돼?'],weekGood:['...좀 컸지. 알아.'],weekTired:['피곤했어. 다음 주는 좀 봐줘.'],
+  pick:['...알았어.','하, 그거야?'],bye:['...울지 마. 나도 안 울 거니까.'],hello:['...뭘 봐. 안녕.'],stageUp:['...컸다고 호들갑 떨지 마.']}},
+ gentle:{n:'다정이',adj:'다정한',tic:'몽글',desc:'조용하고 다정해서 남 챙기기 좋아하는 아이',like:['friends','garden','park','rest'],dis:['work'],toy:['cute','squishy'],L:{
+  touch:['헤헤, 따뜻해요.','고마워요. 기분 좋아요.','살살... 좋아요.'],touchNo:['조금만 쉬어도 될까요?','미안해요, 오늘은 좀 지쳤어요.'],
+  idleHappy:['오늘도 같이 있어 줘서 고마워요.','꽃이 예쁘게 폈어요.','다들 잘 지내고 있을까요?'],idleTired:['조금 졸려요...','괜찮아요, 조금만 쉬면 돼요.'],
+  idleStress:['조금 힘들어요... 그래도 괜찮아요.','하루만 쉬어도 될까요?'],idleChubby:['요즘 좀 동그래졌죠? 헤헤.','산책 같이 갈래요?'],idleBored:['같이 뭐 할까요?','친구들 보고 싶어요.'],
+  love:['오늘 정말 행복했어요.','이런 날이 좋아요.'],hate:['조금 힘들지만 해 볼게요.','이건... 쉽지 않네요.'],
+  study:['천천히 배우면 돼요.','하나 알았어요!'],exercise:['후... 열심히 했어요.','같이 뛰니까 덜 힘들어요.'],play:['다 같이 노니까 좋아요.','친구가 웃어서 저도 좋았어요.'],work:['손님이 고맙다고 했어요.','조금 힘들었지만 뿌듯해요.'],rest:['푹 쉬었어요. 고마워요.','이불이 포근해요.'],
+  meal:['잘 먹겠습니다.','같이 먹으니까 더 맛있어요.'],binge:['조금... 많이 먹었어요.','위로가 필요했나 봐요.'],rebel:['미안해요... 오늘은 정말 못 가겠어요.'],
+  toy:['이거 소중히 할게요.','같이 놀아요.'],evGood:['좋은 일이 있었어요.','다행이에요.'],evBad:['괜찮아요, 다음엔 잘할 수 있어요.','조금 속상해요...'],
+  meet:['{n}, 반가워요.','{n}, 친해지고 싶어요.'],weekStart:['다녀올게요.','이번 주도 잘 부탁해요.'],weekGood:['이번 주도 고마웠어요.'],weekTired:['조금 힘든 한 주였어요. 그래도 괜찮아요.'],
+  pick:['좋아요.','그럴게요.'],bye:['정말 고마웠어요. 잊지 않을게요.'],hello:['안녕하세요... 잘 부탁해요.'],stageUp:['조금 컸어요. 덕분이에요.']}},
+ jock:{n:'열혈이',adj:'열혈',tic:'파이팅',desc:'몸 쓰는 게 제일 좋은 열혈 운동파',like:['exercise','martial','factory'],dis:['study'],toy:['crunch','cool'],L:{
+  touch:['오! 근육 느껴져?','더 세게! 단련 중이야!','하하! 탄력 최고지?'],touchNo:['지금 쿨다운 중이야!','휴식도 훈련이다!'],
+  idleHappy:['오늘도 한 바퀴 뛸까!','스쿼트 열 번 했다! 다리는 없지만!','몸이 근질근질해!'],idleTired:['근육이 쉬고 싶대!','헥헥... 회복 중!'],
+  idleStress:['몸이 무거워... 마음도 무거워...','오늘은 근성이 바닥났어...'],idleChubby:['벌크업 중이야!','이건 근육이야! ...아마도.'],idleBored:['가만히 있는 건 못 참아!','달리고 싶다!'],
+  love:['으랏차! 이거지!','심장이 뛴다!'],hate:['앉아 있는 건 고문이야...','몸이 굳는다...'],
+  study:['머리 근육도 단련!','앉아 있기 힘들어...'],exercise:['으랏차차!','한 바퀴 더!','기록 갱신!'],play:['놀이도 승부다!','이겼다!'],work:['일도 운동이다!','짐 나르기 최고!'],rest:['회복도 훈련의 일부!','근육아 쉬어라!'],
+  meal:['단백질!','많이 먹어야 힘이 나지!'],binge:['벌크업 기간이야!','먹는 것도 훈련!'],rebel:['오늘은 휴식일이다!','몸이 말을 안 들어!'],
+  toy:['이걸로 훈련하자!','던지고 받고!'],evGood:['승리다!','근성의 승리!'],evBad:['다음엔 이긴다!','패배는 성장의 밑거름!'],
+  meet:['{n}! 같이 뛰자!','라이벌로 인정한다, {n}!'],weekStart:['출발! 전력 질주!','이번 주도 힘차게!'],weekGood:['이번 주 훈련 성공!'],weekTired:['오버트레이닝이었어... 쉬자!'],
+  pick:['좋아, 해 보자!','그거 운동 돼?'],bye:['울지 마! 결승선은 웃으면서 통과하는 거야!'],hello:['안녕! 같이 단련하자!'],stageUp:['레벨 업! 몸이 커졌다!']}},
+ posh:{n:'새침이',adj:'새침한',tic:'훗',desc:'우아한 걸 좋아하는 새침데기',like:['manners','artcls','spa','cafe'],dis:['factory','store','jumprope'],toy:['sparkle','cute'],L:{
+  touch:['어머, 너무 세게 하지는 마세요.','살짝만요. 우아하게.','흠흠, 나쁘지 않네요.'],touchNo:['지금은 사양할게요.','오늘은 거리를 두죠.'],
+  idleHappy:['오늘의 나도 완벽하답니다.','차 한 잔이 생각나는 날이네요.','햇살이 닿는 각도가 마음에 들어요.'],idleTired:['조금 피곤하네요. 우아하게 쉬어야겠어요.'],
+  idleStress:['이건 제 품격에 맞지 않아요...','쉬고 싶어요. 조용한 곳에서.'],idleChubby:['풍만해진 것도 매력이죠.','...운동은 내일부터 할게요.'],idleBored:['따분하네요.','어디 우아한 데 없을까요?'],
+  love:['역시 이런 게 어울려요.','아름다운 하루였답니다.'],hate:['어머, 이런 데는 처음이에요.','몸이... 더러워졌어요.'],
+  study:['교양은 기본이죠.','지식은 최고의 장신구랍니다.'],exercise:['땀은 별로지만... 몸매는 중요하죠.'],play:['가끔은 이런 것도 좋네요.','어머, 재밌었어요.'],work:['노동의 가치는 알지만...','손님께 미소를 드렸어요.'],rest:['우아한 휴식이었어요.','거품 목욕이 그리워요.'],
+  meal:['잘 먹겠습니다. 냅킨은요?','음, 풍미가 좋네요.'],binge:['오늘만 특별히 허락하죠.','디저트는 예외랍니다.'],rebel:['오늘은 쉬겠어요. 이유는 묻지 마세요.'],
+  toy:['어머, 귀엽네요. 조금만 놀아 줄게요.','품위 있게 가지고 놀겠어요.'],evGood:['당연한 결과랍니다.','어머, 박수는 사양 안 해요.'],evBad:['...없던 일로 하죠.','이건 제 탓이 아니에요.'],
+  meet:['{n}, 반가워요. 저는 우아한 말랑이랍니다.','{n}... 취향이 괜찮네요.'],weekStart:['다녀오겠어요.','이번 주도 품위 있게.'],weekGood:['훌륭한 한 주였어요.'],weekTired:['조금 거친 한 주였네요.'],
+  pick:['좋아요, 어울리겠네요.','어머, 그거요?'],bye:['울면 화장이 번져요. ...저도요.'],hello:['안녕하세요. 잘 모셔 주세요.'],stageUp:['한층 더 우아해졌답니다.']}},
+ nerd:{n:'엉뚱박사',adj:'엉뚱한',tic:'흐음',desc:'궁금한 게 너무 많은 엉뚱한 꼬마 박사',like:['acad','tutor','comic','study'],dis:['rest'],toy:['weird','sparkle'],L:{
+  touch:['흐음, 탄성 계수가 훌륭하군.','실험 결과: 기분 좋음.','눌린 깊이 3밀리미터... 아마도.'],touchNo:['지금은 연구 중이야.','실험 방해 금지!'],
+  idleHappy:['구름이 왜 말랑해 보이는지 알아?','가설: 나는 젤리일지도 모른다.','오늘은 발견할 게 많을 것 같아.'],idleTired:['뇌가 과열됐어...','데이터 정리 중... 쿨...'],
+  idleStress:['계산이 안 맞아... 다 안 맞아...','휴식 데이터가 부족해.'],idleChubby:['질량이 증가했군. 흥미로워.','중력이 나를 좋아하나 봐.'],idleBored:['궁금한 거 없어? 나 다 알아.','새로운 데이터가 필요해!'],
+  love:['이건 대발견이야!','기록해 둬야겠어!'],hate:['이건 비효율적이야.','가만히 있는 건 연구가 아니야...'],
+  study:['흥미롭군.','책 한 권 더!','가설이 맞았어!'],exercise:['운동량 측정 중... 헥헥.','몸도 실험체다...'],play:['놀이에도 법칙이 있지.','이겼다. 계산대로야.'],work:['노동과 보수의 상관관계를 조사 중.','손님 행동 패턴 분석 완료.'],rest:['뇌도 쉬어야 해.','꿈에서 공식이 나왔어.'],
+  meal:['영양소 섭취 중.','이 맛은 연구할 가치가 있어.'],binge:['당분은 뇌의 연료야.','실험 목적의 과식이야.'],rebel:['오늘은 연구일이야. 안 가.'],
+  toy:['이 장난감의 구조를 분석해 볼까.','탄성이 좋군.'],evGood:['예측대로야!','데이터가 증명했지.'],evBad:['변수가 있었어...','실패도 데이터야.'],
+  meet:['{n}... 표본으로 아주 흥미로워.','연구 조수 해 줄래, {n}?'],weekStart:['오늘의 연구 주제는...','출발. 관찰 시작.'],weekGood:['이번 주 성장률이 아주 좋아.'],weekTired:['피로도 수치가 높아. 휴식 필요.'],
+  pick:['합리적이야.','그거 데이터가 될까?'],bye:['이 감정은 연구해도 모르겠어. ...고마워.'],hello:['안녕. 너를 관찰해도 될까?'],stageUp:['성장 단계 갱신. 기록 완료.']}}
+};
+const PERSONA_IDS=Object.keys(PERSONA);
+const SP_PERSONA={jelly:{sunny:3,gentle:2},pudding:{sunny:2,posh:2},mochi:{lazy:3,gentle:2},marsh:{gentle:3,posh:1},bread:{gentle:2,lazy:2},bun:{lazy:3,sunny:1},butter:{posh:3,lazy:1},crunch:{jock:3,grumpy:2},cheese:{sunny:2,jock:1,grumpy:1},beads:{nerd:3,grumpy:1}};
+function rollPersona(sp,avoid){const w={};PERSONA_IDS.forEach(k=>w[k]=1+((SP_PERSONA[sp]||{})[k]||0)*1.2);if(avoid)w[avoid]*=.35;let t=0;for(const k in w)t+=w[k];let r=Math.random()*t;for(const k of PERSONA_IDS){r-=w[k];if(r<=0)return k}return 'gentle'}
+function persona(){return PERSONA[G.malang.persona]||PERSONA.gentle}
+function addTic(line,tic){const m=line.match(/^(.*?)([.!?~…]*)$/);if(!m[1])return line;return `${m[1]}, ${tic}${m[2]||'!'}`}
+function likeTxt(arr){return arr.map(k=>CATS[k]?CATS[k].name:SUBS[k]?SUBS[k].name:k).join(', ')}
+function talk(key,vars){
+  const st=stageOf(G.week).id,P=persona();
+  const pl=P.L[key],sl=(LINES[st]&&LINES[st][key])||LINES.kid[key];
+  const pr={baby:.5,kid:.65,teen:.78,adult:.82}[st]||.7;
+  let line=pl&&(!sl||Math.random()<pr)?pick(pl):pick(sl||['...']);
+  if(vars&&vars.n)line=line.replace(/\{n\}/g,vars.n);else line=line.replace(/,?\s?\{n\}/g,'');
+  if(P.tic&&!line.includes(P.tic)&&Math.random()<({baby:.4,kid:.32,teen:.22,adult:.16}[st]||.25))line=addTic(line,P.tic);
+  return line;
+}
 
 function stressMult(s){return s<30?1.2:s<60?1:s<80?.7:.4}
 
@@ -1525,7 +1731,113 @@ const ART={
   street:()=>A.sky('#d9e5ee','#f3eee6')+A.house(-10,300,120,140,'#f3d9c0','#e48a6a')+A.house(290,300,120,150,'#e8dff2','#c9a7ec')+A.tiles('#d6cdbf','#9c8f7f',50),
   night:()=>A.sky('#2f2c55','#5d5890')+A.stars()+`<g class="amb-glow">${Ci(320,70,26,'#fff4b0')}</g>`+Ci(332,62,22,'#5d5890','stroke-opacity="0"')+A.house(-10,320,140,120,'#4a4778','#3a3768')+A.house(260,320,150,150,'#4a4778','#3a3768')+A.tiles('#3d3a68','#6f6aa0',50)
 };
-function placeSVG(pid){const f=ART[pid]||ART.home;return `<svg class="scene-svg" viewBox="0 0 400 400" preserveAspectRatio="xMidYMax slice" aria-hidden="true">${f()}</svg>`}
+
+/* =========================================================
+   장소 배경 v2: 기본 방과 같은 빛·재질·깊이로 통일한 2.5D 디오라마
+   - 빛은 항상 왼쪽 위 창가에서, 바닥과 벽은 하나의 소실점(200,150)을 향한다
+   - 외곽선 대신 면의 밝기 차이(윗면 밝게 / 옆면 어둡게)와 부드러운 그림자로 입체를 만든다
+   ========================================================= */
+let AD=[],AID=0;
+const VP=[200,150];
+function hexRGB(h){h=h.replace('#','');if(h.length===3)h=h.split('').map(c=>c+c).join('');return [0,2,4].map(i=>parseInt(h.substr(i,2),16))}
+function mix(a,b,t){const A=hexRGB(a),B=hexRGB(b);return '#'+A.map((v,i)=>Math.round(v+(B[i]-v)*t).toString(16).padStart(2,'0')).join('')}
+const LI=(c,t)=>mix(c,'#ffffff',t),DK=(c,t)=>mix(c,'#3a2418',t);
+function lg(st,x2=0,y2=1){const id='p'+(++AID);AD.push(`<linearGradient id="${id}" x1="0" y1="0" x2="${x2}" y2="${y2}">${st.map(([o,c,op=1])=>`<stop offset="${o}" stop-color="${c}" stop-opacity="${op}"/>`).join('')}</linearGradient>`);return `url(#${id})`}
+function rgr(st,cx=.5,cy=.5,r=.5){const id='p'+(++AID);AD.push(`<radialGradient id="${id}" cx="${cx}" cy="${cy}" r="${r}">${st.map(([o,c,op=1])=>`<stop offset="${o}" stop-color="${c}" stop-opacity="${op}"/>`).join('')}</radialGradient>`);return `url(#${id})`}
+const f1=n=>(+n).toFixed(1);
+function shd(x,y,rx,ry,o=.2){return `<ellipse cx="${f1(x)}" cy="${f1(y)}" rx="${f1(rx)}" ry="${f1(ry)}" fill="${rgr([[0,'#4a2c18',o],[1,'#4a2c18',0]])}"/>`}
+function poly(pts,f){return `<path d="M${pts.map(p=>p.map(f1).join(' ')).join('L')}Z" fill="${f}" stroke="${f}" stroke-width="2.5" stroke-linejoin="round"/>`}
+// 2.5D 상자: 소실점을 향해 윗면/옆면이 보인다
+function bx(x,y,w,h,c,o={}){
+  const k=o.k??.12,P=([px,py])=>[px+(VP[0]-px)*k,py+(VP[1]-py)*k];
+  const FL=[x,y-h],FR=[x+w,y-h],BR=[x+w,y],BL=[x,y];
+  let s=o.flat||o.wall?'':shd(x+w/2,y+3,w*.62+6,Math.max(5,w*.09),.22);
+  if(!o.wall){if(x+w<VP[0]-2)s+=poly([FR,BR,P(BR),P(FR)],DK(c,.25));if(x>VP[0]+2)s+=poly([FL,BL,P(BL),P(FL)],DK(c,.25));if(y-h>VP[1])s+=poly([FL,FR,P(FR),P(FL)],LI(c,.38))}
+  s+=`<rect x="${f1(x)}" y="${f1(y-h)}" width="${f1(w)}" height="${f1(h)}" rx="${o.r??5}" fill="${lg([[0,LI(c,.14)],[.55,c],[1,DK(c,.1)]],1,0)}"/>`;
+  s+=`<rect x="${f1(x)}" y="${f1(y-h)}" width="${f1(w)}" height="${f1(h)}" rx="${o.r??5}" fill="${lg([[0,'#fff',.18],[.25,'#fff',0],[.85,'#3a2418',0],[1,'#3a2418',.14]])}"/>`;
+  return s;
+}
+function cyl(x,y,rx,h,c,o={}){const ry=rx*.3;
+  return (o.noShadow?'':shd(x,y+2,rx*1.25,ry*1.3,.22))+`<path d="M${f1(x-rx)} ${f1(y-h)}V${f1(y)}A${f1(rx)} ${f1(ry)} 0 0 0 ${f1(x+rx)} ${f1(y)}V${f1(y-h)}Z" fill="${lg([[0,DK(c,.12)],[.3,LI(c,.22)],[.7,c],[1,DK(c,.22)]],1,0)}"/><ellipse cx="${f1(x)}" cy="${f1(y-h)}" rx="${f1(rx)}" ry="${f1(ry)}" fill="${LI(c,.32)}"/>`}
+function ball(x,y,r,c,o={}){return (o.noShadow?'':shd(x,y+r*.95,r*1.1,r*.28,.24))+`<circle cx="${f1(x)}" cy="${f1(y)}" r="${f1(r)}" fill="${rgr([[0,LI(c,.45)],[.55,c],[1,DK(c,.22)]],.35,.3,.75)}"/>`}
+function glowC(x,y,r,c,o=.55,cls='amb-glow'){return `<g class="${cls}"><circle cx="${f1(x)}" cy="${f1(y)}" r="${f1(r)}" fill="${rgr([[0,c,o],[1,c,0]])}"/></g>`}
+// 바닥 위 평면(돗자리·매트): 앞쪽 폭 w, 깊이 d
+function fq(cx,cy,w,d,c,pat){const k=d/250,P=([px,py])=>[px+(VP[0]-px)*k,py+(VP[1]-py)*k];const NL=[cx-w/2,cy+d/2],NR=[cx+w/2,cy+d/2],FR=P(NR),FL=P(NL);
+  return shd(cx,cy+d/2+2,w*.55,6,.16)+poly([NL,NR,FR,FL],c)+(pat||'')}
+const W2={
+  wall(c1,c2,o={}){return `<rect width="400" height="302" fill="${lg([[0,LI(c1,.05)],[1,c2]])}"/>`+(o.pat?o.pat:'')+`<rect width="400" height="302" fill="${rgr([[0,'#fffbef',.75],[1,'#fffbef',0]],.18,.2,.6)}"/>`+W2.beams()},
+  beams(){return `<g class="amb-sway2" opacity=".55">${[0,1,2].map(i=>`<path d="M${-40+i*70} 0h40L${120+i*70} 300h-40z" fill="${lg([[0,'#fffaf0',.55],[1,'#fffaf0',0]])}"/>`).join('')}</g>`},
+  dots(c){let s='';for(let y=18;y<300;y+=26)for(let x=(y/26%2)*13+10;x<400;x+=26)s+=`<circle cx="${x}" cy="${y}" r="2.2" fill="${c}"/>`;return s},
+  stripes(c){let s='';for(let x=0;x<400;x+=34)s+=`<rect x="${x}" width="15" height="302" fill="${c}"/>`;return s},
+  tilesW(c){let s='';for(let x=0;x<=400;x+=32)s+=`<path d="M${x} 0V302" stroke="${c}" stroke-width="1.6"/>`;for(let y=0;y<=300;y+=32)s+=`<path d="M0 ${y}H400" stroke="${c}" stroke-width="1.6"/>`;return s},
+  trim(c){return `<rect y="290" width="400" height="14" fill="${lg([[0,LI(c,.2)],[1,DK(c,.1)]])}"/><rect y="304" width="400" height="18" fill="${lg([[0,'#3a2418',.16],[1,'#3a2418',0]])}"/>`},
+  floor(c1,c2,kind='wood',lc){lc=lc||DK(c2,.25);let s=`<rect y="302" width="400" height="98" fill="${lg([[0,c1],[1,c2]])}"/>`;
+    const conv=x=>x+(VP[0]-x)*((400-302)/(400-VP[1]));
+    if(kind==='wood'||kind==='tile'||kind==='tatami'||kind==='check'){const step=kind==='tatami'?90:kind==='wood'?46:56;for(let x=-400;x<=800;x+=step)s+=`<path d="M${x} 400L${f1(conv(x))} 302" stroke="${lc}" stroke-opacity=".35" stroke-width="1.6"/>`}
+    if(kind!=='wood')[318,340,368].forEach(y=>s+=`<path d="M0 ${y}H400" stroke="${lc}" stroke-opacity=".3" stroke-width="1.6"/>`);
+    if(kind==='check'){for(let r=0;r<3;r++)for(let i=-6;i<8;i++){const y1=[302,318,340,368,400][r],y2=[302,318,340,368,400][r+1];if((i+r)%2)continue;const xa=x=>x+(VP[0]-x)*((400-y1)/(400-VP[1])),xb=x=>x+(VP[0]-x)*((400-y2)/(400-VP[1]));const X1=i*56,X2=X1+56;s+=poly([[xa(X1),y1],[xa(X2),y1],[xb(X2),y2],[xb(X1),y2]],lc).replace('fill="','fill-opacity=".25" fill="')}}
+    s+=`<ellipse cx="190" cy="345" rx="170" ry="40" fill="${rgr([[0,'#fff8ea',.4],[1,'#fff8ea',0]])}"/>`;
+    return s},
+  grass(c1,c2){let s=`<rect y="300" width="400" height="100" fill="${lg([[0,c1],[1,c2]])}"/>`;[[30,340],[92,372],[300,348],[362,382],[200,392],[128,352],[258,378],[60,392],[340,330]].forEach(([x,y])=>s+=`<path d="M${x} ${y}q-3-8-1-12q2 6 3 11q1-7 4-10q-1 7-2 11z" fill="${DK(c2,.15)}" opacity=".55"/>`);return s+`<ellipse cx="190" cy="345" rx="170" ry="40" fill="${rgr([[0,'#fffbe6',.35],[1,'#fffbe6',0]])}"/>`},
+  sky(c1,c2){return `<rect width="400" height="310" fill="${lg([[0,c1],[1,c2]])}"/><rect width="400" height="310" fill="${rgr([[0,'#fffbe8',.8],[1,'#fffbe8',0]],.2,.15,.55)}"/>`},
+  cloud(x,y,s=1){return `<g class="amb-cloud" style="animation-duration:${20+x%9*3}s">${[[0,0,26],[24,-10,30],[52,0,22],[26,6,26]].map(([dx,dy,r])=>`<circle cx="${f1(x+dx*s)}" cy="${f1(y+dy*s)}" r="${f1(r*s)}" fill="${rgr([[0,'#fff',1],[.7,'#fff',.85],[1,'#fff',0]])}"/>`).join('')}</g>`},
+  hills(c,y=300,o=1){return `<path d="M-20 ${y}C40 ${y-60} 110 ${y-62} 160 ${y-20}S270 ${y-80} 340 ${y-40} 420 ${y-30} 420 ${y-30}V${y+10}H-20Z" fill="${lg([[0,LI(c,.25)],[1,c]])}" opacity="${o}"/>`},
+  haze(c,y1=150,y2=310){return `<rect y="${y1}" width="400" height="${y2-y1}" fill="${lg([[0,c,0],[1,c,.45]])}"/>`},
+  vig(){return `<rect width="400" height="400" fill="${rgr([[0,'#000',0],[.7,'#000',0],[1,'#3a2418',.22]],.5,.45,.75)}"/>`},
+  win(x,y,w,h,sky='#d6ebf5',cur){let s=bx(x-8,y+h+10,w+16,h+20,'#fff3e4',{wall:1,r:14})+`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="8" fill="${lg([[0,LI(sky,.3)],[1,sky]])}"/><ellipse cx="${x+w*.3}" cy="${y+h*.28}" rx="${w*.18}" ry="${h*.08}" fill="#fff" opacity=".8"/><path d="M${x+w/2} ${y}V${y+h}M${x} ${y+h/2}H${x+w}" stroke="#fff3e4" stroke-width="7"/>`+bx(x-14,y+h+18,w+28,10,'#f1dfc8',{wall:1,r:4});
+    if(cur)s+=`<path d="M${x-14} ${y-10}h${w*.3}c-8 ${h*.5} -2 ${h} 6 ${h+18}h-${w*.3+10}z" fill="${lg([[0,LI(cur,.15)],[1,DK(cur,.12)]],1,0)}"/><path d="M${x+w+14} ${y-10}h-${w*.3}c8 ${h*.5} 2 ${h} -6 ${h+18}h${w*.3+10}z" fill="${lg([[0,DK(cur,.12)],[1,LI(cur,.15)]],1,0)}"/>`;
+    return s},
+  spill(x,w){return `<path d="M${x} 302h${w}l${w*.6} 98h-${w*1.4}z" fill="${lg([[0,'#fffaf0',.4],[1,'#fffaf0',0]])}"/>`},
+  shelf(x,y,w,rows,cols){cols=cols||['#ec9bb4','#97afe9','#f2cf6a','#8fd2bf','#c7ade9','#f5a983','#a6d88f'];let s=bx(x,y+rows*44+8,w,rows*44+14,'#d9b48c',{wall:1,r:6});
+    for(let r=0;r<rows;r++){const yy=y+r*44+10;let bx_=x+7,i=r*3+(x%5);while(bx_<x+w-12){const bw=8+(i*7)%6,bh=24+(i*5)%10;s+=`<rect x="${bx_}" y="${yy+32-bh}" width="${bw}" height="${bh}" rx="2" fill="${lg([[0,LI(cols[i%cols.length],.2)],[1,DK(cols[i%cols.length],.1)]],1,0)}"/>`;bx_+=bw+2;i++}s+=`<rect x="${x+3}" y="${yy+32}" width="${w-6}" height="6" rx="2" fill="#c49a6c"/>`}
+    return s},
+  frame(x,y,w,h,c='#f2c96a',inner='#9edc86'){return bx(x,y+h,w,h,c,{wall:1,r:5})+`<rect x="${x+6}" y="${y+6}" width="${w-12}" height="${h-12}" rx="3" fill="#fff8ec"/><path d="M${x+12} ${y+h-10}c0-${h*.35} ${w*.15}-${h*.5} ${w*.3}-${h*.5}s${w*.3} ${h*.15} ${w*.3} ${h*.5}z" fill="${inner}"/>`},
+  plant(x,y,s=1){return cyl(x,y,13*s,24*s,'#e19a7c')+`<g class="amb-sway" style="transform-origin:${x}px ${y-24*s}px">${[[-11,-22,-28],[11,-24,28],[0,-34,0],[-4,-28,-10]].map(([dx,dy,a])=>`<ellipse cx="${f1(x+dx*s)}" cy="${f1(y-24*s+dy*s)}" rx="${f1(8*s)}" ry="${f1(19*s)}" transform="rotate(${a} ${f1(x+dx*s)} ${f1(y-24*s+dy*s)})" fill="${lg([[0,'#b4e2a0'],[1,'#6fae64']],1,0)}"/>`).join('')}</g>`},
+  lamp(x,y,c='#f6d27a'){return `<path d="M${x} 0V${y-16}" stroke="#7a5a44" stroke-opacity=".5" stroke-width="2"/>`+glowC(x,y+30,70,'#fff1b8',.5)+`<path d="M${x-20} ${y+2}l9-20h22l9 20z" fill="${lg([[0,LI(c,.25)],[1,DK(c,.1)]],1,0)}"/><ellipse cx="${x}" cy="${y+2}" rx="20" ry="4" fill="#fff6c8"/>`},
+  tree(x,y,s=1,c='#8fcf7c'){return shd(x,y+2,40*s,8*s,.2)+`<rect x="${f1(x-5*s)}" y="${f1(y-50*s)}" width="${f1(10*s)}" height="${f1(50*s)}" rx="4" fill="${lg([[0,'#a07a5c'],[1,'#7a5a44']],1,0)}"/><g class="amb-sway" style="transform-origin:${x}px ${y}px">${[[0,-78,36],[-28,-58,25],[28,-60,26],[0,-56,28]].map(([dx,dy,r])=>`<circle cx="${f1(x+dx*s)}" cy="${f1(y+dy*s)}" r="${f1(r*s)}" fill="${rgr([[0,LI(c,.35)],[.6,c],[1,DK(c,.2)]],.35,.3,.75)}"/>`).join('')}</g>`},
+  bush(x,y,s=1,c='#86c776'){return shd(x,y+2,36*s,6*s,.18)+[[-18,-10,16],[0,-18,20],[18,-10,16]].map(([dx,dy,r])=>`<circle cx="${f1(x+dx*s)}" cy="${f1(y+dy*s)}" r="${f1(r*s)}" fill="${rgr([[0,LI(c,.3)],[.6,c],[1,DK(c,.2)]],.35,.3,.75)}"/>`).join('')},
+  flower(x,y,c){return `<path d="M${x} ${y}v-14" stroke="#6fae5a" stroke-width="2.4" stroke-linecap="round"/>`+ball(x,y-17,5,c,{noShadow:1})},
+  stars(){let s='';[[40,40],[110,80],[180,30],[250,70],[330,40],[370,110],[70,140],[300,150]].forEach(([x,y],i)=>s+=`<g class="amb-blink" style="animation-delay:${i*.4}s"><circle cx="${x}" cy="${y}" r="2.2" fill="#fff7c8"/><circle cx="${x}" cy="${y}" r="7" fill="${rgr([[0,'#fff7c8',.6],[1,'#fff7c8',0]])}"/></g>`);return s},
+  sign(x,y,w,t,c='#fff6ea',tc='#a8794e',fs=17){return bx(x,y+40,w,40,c,{wall:1,r:10})+`<text x="${x+w/2}" y="${y+27}" text-anchor="middle" font-family="Jua,sans-serif" font-size="${fs}" fill="${tc}">${t}</text>`},
+  house(x,y,w,h,c,roof){return bx(x,y,w,h,c,{r:4})+`<path d="M${x-8} ${y-h}L${x+w/2} ${y-h-36}L${x+w+8} ${y-h}Z" fill="${lg([[0,LI(roof,.15)],[1,DK(roof,.12)]],1,0)}"/>`+`<rect x="${x+w*.15}" y="${y-h*.8}" width="${w*.26}" height="${w*.22}" rx="4" fill="${lg([[0,'#fff6c8'],[1,'#f4d98a']])}"/><rect x="${x+w*.55}" y="${y-h*.42}" width="${w*.3}" height="${h*.42}" rx="4" fill="${DK(c,.25)}"/>`},
+  cat(x,y){return `<path d="M${x} ${y}c0-16 6-24 16-24l3-9 4 8h6l4-8 3 9c8 2 10 10 10 24z" fill="#5b4a43" opacity=".7"/>`},
+  steam(x,y){return `<g class="amb-steam">${[0,22,44].map(d=>`<path d="M${x+d} ${y}c-8-10 8-16 0-28" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width="5" stroke-linecap="round"/>`).join('')}</g>`},
+  toy(x,y,c){return shd(x,y+1,14,3,.2)+`<path d="M${x-12} ${y}c-2-12 4-18 12-18s14 6 12 18z" fill="${rgr([[0,LI(c,.4)],[.6,c],[1,DK(c,.15)]],.35,.3,.8)}"/><circle cx="${x-4}" cy="${y-8}" r="1.5" fill="#3e3431"/><circle cx="${x+4}" cy="${y-8}" r="1.5" fill="#3e3431"/>`},
+  clawm(x,y,c){return bx(x,y,80,170,c,{r:10})+`<rect x="${x+8}" y="${y-160}" width="64" height="80" rx="6" fill="${lg([[0,'#f2fbff',.95],[1,'#cfe9f4',.95]])}"/><path d="M${x+40} ${y-160}V${y-132}" stroke="#7a8089" stroke-width="2"/><path d="M${x+32} ${y-132}h16l-3 6h-10z" fill="#aeb4be"/>`+[[18,0,'#ffd66b'],[32,6,'#ff9db8'],[46,0,'#9be29a'],[60,4,'#bfe6ff'],[25,14,'#ffb3a8']].map(([dx,dy,cc])=>ball(x+dx,y-92-dy,7,cc,{noShadow:1})).join('')+`<rect x="${x+8}" y="${y-72}" width="64" height="24" rx="5" fill="#4a3e3a"/>`+ball(x+24,y-60,5,'#f2577a',{noShadow:1})},
+  cab(x,y,c){return bx(x,y,62,124,c,{r:8})+`<g class="amb-blink"><rect x="${x+8}" y="${y-112}" width="46" height="36" rx="4" fill="#2b2747"/><rect x="${x+14}" y="${y-104}" width="14" height="8" fill="#7ef0c0"/><rect x="${x+32}" y="${y-92}" width="14" height="8" fill="#f2577a"/></g>`+glowC(x+31,y-94,40,'#9a8cff',.35,'amb-blink')+`<rect x="${x+4}" y="${y-66}" width="54" height="16" rx="4" fill="${DK(c,.35)}"/>`},
+  machine(x,y){return glowC(x+31,y-30,46,'#fff1b8',.35)}
+};
+const ART2={
+  home:()=>W2.wall('#f4e6d4','#ead8c1',{pat:W2.dots('#ecd6bb')})+W2.win(232,62,108,120,'#d6ebf5','#f4b4a8')+W2.frame(70,96,62,50)+W2.shelf(18,196,96,1)+W2.trim('#f1dfc8')+W2.floor('#e7cfb1','#d8bb98')+W2.spill(214,90)+`<ellipse cx="200" cy="364" rx="128" ry="24" fill="${rgr([[0,'#fffbf3'],[1,'#efe4d6']])}"/>`+W2.plant(366,330,1)+W2.lamp(200,40)+W2.vig(),
+  library:()=>W2.wall('#ebe1f4','#ddd0ec')+W2.win(158,40,84,96,'#e2d8f6')+W2.shelf(0,58,112,5)+W2.shelf(288,58,112,5)+W2.trim('#d8c6e6')+W2.floor('#d9bd9d','#c7a682')+W2.spill(150,70)+`<ellipse cx="200" cy="364" rx="122" ry="22" fill="${rgr([[0,'#d7c8ec'],[1,'#b9a6d4']])}"/>`+W2.lamp(200,168,'#c8b3ec')+W2.vig(),
+  salon:()=>W2.wall('#f8e6ec','#f0d7df',{pat:W2.stripes('rgba(242,166,196,.15)')})+W2.win(150,52,100,100,'#fde9ef','#f2a8c4')+W2.frame(28,80,64,54,'#d9b6e8','#f5b7cf')+W2.trim('#ecd0da')+W2.floor('#ecd5c6','#dcbfae')+W2.spill(140,90)+`<ellipse cx="200" cy="366" rx="128" ry="22" fill="${rgr([[0,'#fbd6e0'],[1,'#eab5c6']])}"/>`+cyl(336,330,30,6,'#f4dcc0')+`<rect x="333" y="330" width="6" height="34" fill="#c99a74"/>`+ball(330,312,10,'#f6f6f6')+W2.flower(350,322,'#f28fb0')+bx(20,348,52,40,'#f1c6d4')+W2.vig(),
+  artroom:()=>W2.wall('#fdf1df','#f5e3ca')+[['#f5b7cf',60,70,16],['#8fa8ee',340,96,13],['#f7cf5a',300,44,11],['#9edc86',110,150,9]].map(([c,x,y,r])=>`<circle cx="${x}" cy="${y}" r="${r}" fill="${c}" opacity=".45"/><circle cx="${x+r}" cy="${y-r*.6}" r="${r*.4}" fill="${c}" opacity=".45"/>`).join('')+W2.frame(160,56,80,58,'#8fcf7c','#f5b7cf')+W2.trim('#ecd9bb')+W2.floor('#ecd8bb','#dcc2a0')+bx(16,336,8,110,'#b9875c',{flat:1})+bx(14,250,70,60,'#fffaf0')+`<path d="M24 240c6-16 18-20 26-10s14-2 14 12z" fill="#f5b7cf" opacity=".9"/>`+bx(320,336,8,110,'#b9875c',{flat:1})+bx(316,252,72,60,'#fffaf0')+ball(352,232,10,'#8fa8ee',{noShadow:1})+cyl(80,372,10,16,'#f28fb0')+cyl(104,376,9,14,'#7fcfb9')+W2.vig(),
+  dojo:()=>W2.wall('#f1e3c6','#e3cfa6')+[30,90,150,250,310,370].map(x=>`<rect x="${x}" width="4" height="302" fill="#c9a877" opacity=".35"/>`).join('')+bx(32,212,46,160,'#fff8ea',{wall:1,r:3})+`<path d="M55 78c-8 18 10 28 0 70" stroke="#3e3431" stroke-width="6" stroke-linecap="round" fill="none" opacity=".75"/>`+bx(322,212,46,160,'#fff8ea',{wall:1,r:3})+`<path d="M345 80c8 20-10 26 0 70" stroke="#3e3431" stroke-width="6" stroke-linecap="round" fill="none" opacity=".75"/>`+`<path d="M200 0V56" stroke="#7a5a44" stroke-opacity=".5" stroke-width="2"/>`+glowC(200,84,60,'#ffd2a0',.45)+`<g class="amb-sway" style="transform-origin:200px 0px"><ellipse cx="200" cy="82" rx="20" ry="26" fill="${rgr([[0,'#ffb09a'],[1,'#e86a5a']],.4,.35,.7)}"/></g>`+W2.trim('#c9a877')+W2.floor('#ddd09c','#cbbb82','tatami','#8d7c46')+cyl(352,340,16,62,'#c99a6a')+ball(352,268,14,'#e0b080',{noShadow:1})+W2.vig(),
+  trail:()=>W2.sky('#cfe7f2','#eef4e4')+W2.cloud(40,62)+W2.cloud(250,40,.8)+W2.hills('#c9e6b2',250,.7)+W2.haze('#eef4e4',200,300)+W2.hills('#b4dc98',300)+W2.grass('#b9da9c','#9cc77e')+`<path d="M130 400C160 360 186 330 200 302 214 330 240 360 270 400Z" fill="${lg([[0,'#e3d1ab'],[1,'#d6bf92']])}"/>`+W2.tree(46,330,1.1)+W2.tree(364,334,.95,'#7cc06a')+W2.bush(90,360,.8)+W2.vig(),
+  pool:()=>W2.wall('#e3f2f8','#cfe6ef',{pat:W2.tilesW('rgba(140,190,210,.35)')})+W2.win(140,36,120,78,'#d4eff9')+`<path d="M0 30Q200 52 400 30" fill="none" stroke="#f2577a" stroke-width="3" stroke-dasharray="12 9"/>`+W2.trim('#d6ebf1')+`<rect y="302" width="400" height="98" fill="${lg([[0,'#9ad7ea'],[1,'#6fc0dc']])}"/><g class="amb-wave">${[318,340,366,392].map((y,i)=>`<path d="M-40 ${y}q20-6 40 0t40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0 40 0" fill="none" stroke="#fff" stroke-opacity="${.5-i*.08}" stroke-width="3"/>`).join('')}</g><path d="M0 352H400" stroke="#f2577a" stroke-width="4" stroke-dasharray="10 8" opacity=".8"/>`+`<path d="M40 302V236M70 302V236M40 256H70M40 280H70" stroke="#b9c8d0" stroke-width="5" stroke-linecap="round"/>`+`<circle cx="340" cy="372" r="16" fill="none" stroke="#ff8f8f" stroke-width="9"/><circle cx="340" cy="372" r="16" fill="none" stroke="#fff" stroke-width="9" stroke-dasharray="8 17"/>`+W2.vig(),
+  yoga:()=>W2.wall('#e6f1e3','#d7e7d2')+W2.win(132,42,136,128,'#e6f5ea','#cfe5c8')+W2.trim('#d9e6d2')+W2.floor('#e6dcc6','#d5c7aa')+W2.spill(124,110)+fq(200,356,190,46,'#b8dbb0')+fq(70,372,90,30,'#f2c2cf')+W2.plant(40,316,1.3)+W2.plant(362,316,1.1)+cyl(104,300,5,18,'#fff6ea',{noShadow:1})+glowC(104,272,16,'#ffd66b',.8,'amb-blink')+cyl(300,300,5,18,'#fff6ea',{noShadow:1})+glowC(300,272,16,'#ffd66b',.8,'amb-blink')+W2.vig(),
+  park:()=>W2.sky('#cfe7f2','#eef4e4')+glowC(330,62,46,'#ffe58a',.7,'amb-glow')+ball(330,62,20,'#ffd56a',{noShadow:1})+W2.cloud(60,70)+W2.cloud(220,38,.7)+W2.hills('#cfe9b8',268,.7)+W2.haze('#eef4e4',220,300)+W2.hills('#bfe2a6',302)+W2.grass('#bcdc9e','#9ec880')+W2.tree(40,334,1.2)+W2.bush(352,326,1)+bx(280,330,96,10,'#d9a877')+bx(280,312,96,8,'#e3b788',{flat:1})+W2.flower(90,384,'#f28fb0')+W2.flower(112,374,'#f7cf5a')+W2.flower(322,388,'#c9a7ec')+W2.vig(),
+  arcade:()=>`<rect width="400" height="302" fill="${lg([[0,'#463f6e'],[1,'#5d4f86']])}"/>`+W2.dots('rgba(255,255,255,.05)')+`<path d="M60 0L0 300H140Z" fill="${lg([[0,'#f2577a',.28],[1,'#f2577a',0]])}" class="amb-blink"/><path d="M340 0L270 300H400Z" fill="${lg([[0,'#7ef0c0',.25],[1,'#7ef0c0',0]])}" class="amb-blink"/>`+W2.trim('#3a3355')+W2.floor('#433b63','#2f2a4d','check','#8a7cc4')+W2.cab(8,318,'#9b8ce0')+W2.cab(76,322,'#f2a6c4')+W2.cab(262,322,'#7fcfb9')+W2.cab(330,318,'#f6c94c')+W2.stars()+`<rect width="400" height="400" fill="${rgr([[0,'#000',0],[.7,'#000',0],[1,'#120c24',.4]],.5,.45,.75)}"/>`,
+  karaoke:()=>`<rect width="400" height="302" fill="${lg([[0,'#523b6a'],[1,'#7a4f7f']])}"/>`+`<path d="M120 0L50 300H190Z" fill="${lg([[0,'#f7cf5a',.25],[1,'#f7cf5a',0]])}" class="amb-blink"/><path d="M290 0L220 300H360Z" fill="${lg([[0,'#f28fb0',.25],[1,'#f28fb0',0]])}" class="amb-blink"/>`+`<path d="M200 0V40" stroke="#ccc" stroke-width="2"/><g class="amb-spin" style="transform-origin:200px 62px">${ball(200,62,22,'#d9dbe8',{noShadow:1})}<path d="M178 62H222M200 40V84" stroke="#fff" stroke-opacity=".6" stroke-width="2"/></g>`+bx(122,200,156,90,'#2a2140',{wall:1,r:10})+`<g class="amb-blink">${[130,150,170].map((y,i)=>`<rect x="${142}" y="${y}" width="${116-i*30}" height="8" rx="4" fill="#f9c4d6"/>`).join('')}</g>`+W2.trim('#3a2b4d')+W2.floor('#4a3860','#33264a','tile','#a07ab8')+bx(10,340,92,40,'#c94f7c',{r:14})+bx(300,340,90,40,'#8a5ab0',{r:14})+`<rect width="400" height="400" fill="${rgr([[0,'#000',0],[.7,'#000',0],[1,'#1a0c24',.35]],.5,.45,.75)}"/>`,
+  alley:()=>W2.sky('#d9e7f0','#f3eee6')+W2.cloud(160,50,.7)+W2.house(-10,300,120,140,'#f3d9c0','#e48a6a')+W2.house(290,300,120,160,'#dbe6f3','#8fa8ee')+`<rect y="290" width="400" height="14" fill="#efe3d0"/>`+W2.floor('#ddd3c4','#cbbfad','tile','#8f8070')+`<path d="M132 340V190" stroke="#6b5a52" stroke-width="5" stroke-linecap="round"/>`+glowC(132,182,40,'#fff1b8',.6)+ball(132,182,10,'#fff3c4',{noShadow:1})+W2.cat(338,338)+W2.bush(372,346,.7)+W2.vig(),
+  bakery:()=>W2.wall('#f7e0c8','#efd2b2',{pat:W2.dots('#f0ccaa')})+`<path d="M0 0h400v36${[...Array(8)].map(()=>'c-12 14-38 14-50 0').join('')}z" fill="${lg([[0,'#f6a0a0'],[1,'#e57c7c']])}"/>`+W2.sign(150,58,100,'BAKERY')+W2.trim('#e6c49e')+W2.floor('#dfbf98','#cfa97f')+bx(8,330,112,70,'#e9b874')+bx(4,262,120,10,'#fff3e0',{flat:1})+[[34,'#e9b874'],[70,'#d79c5a'],[104,'#f2c98c']].map(([x,c])=>`<path d="M${x-14} 258c0-12 6-16 14-16s14 4 14 16z" fill="${rgr([[0,LI(c,.35)],[1,DK(c,.12)]],.35,.3,.8)}"/>`).join('')+bx(280,330,112,70,'#e9b874')+bx(276,262,120,10,'#fff3e0',{flat:1})+[[300,'#f2c98c'],[336,'#e9b874'],[372,'#d79c5a']].map(([x,c])=>`<path d="M${x-14} 258c0-12 6-16 14-16s14 4 14 16z" fill="${rgr([[0,LI(c,.35)],[1,DK(c,.12)]],.35,.3,.8)}"/>`).join('')+W2.vig(),
+  store:()=>W2.wall('#e6f3f4','#d6eaec')+`<rect width="400" height="26" fill="#7fcfb9"/>`+W2.sign(130,40,140,'24시 말랑마트','#fff','#4f9a86',16)+[[6,'#f7f9fa'],[296,'#f7f9fa']].map(([x,c])=>bx(x,312,98,196,c)+[150,200,250].map((y,j)=>`<rect x="${x+4}" y="${y}" width="90" height="5" fill="#c9d6d9"/>`+[0,1,2,3].map(i=>`<rect x="${x+10+i*21}" y="${y-24}" width="15" height="24" rx="3" fill="${lg([[0,LI(['#f28fb0','#f7cf5a','#7fcfb9','#8fa8ee'][(i+j)%4],.2)],[1,['#f28fb0','#f7cf5a','#7fcfb9','#8fa8ee'][(i+j)%4]]],1,0)}"/>`).join('')).join('')).join('')+W2.trim('#cfe0e3')+W2.floor('#dde5e7','#c9d4d7','tile','#93a6ab')+W2.vig(),
+  factory:()=>W2.wall('#dde0e4','#cdd1d6')+`<rect width="400" height="16" fill="#e6c25a"/><path d="M0 16h400" stroke="#4a3e3a" stroke-width="6" stroke-dasharray="14 14" opacity=".5"/>`+[[60,96,34,'#b8bec8'],[118,136,22,'#c9cdd4',1],[340,112,30,'#b8bec8',1]].map(([x,y,r,c,rev])=>`<g class="amb-spin${rev?' rev':''}" style="transform-origin:${x}px ${y}px">${[...Array(8)].map((_,i)=>`<rect x="${x-r*.18}" y="${y-r-6}" width="${r*.36}" height="12" rx="2" fill="${c}" transform="rotate(${i*45} ${x} ${y})"/>`).join('')}${ball(x,y,r,c,{noShadow:1})}<circle cx="${x}" cy="${y}" r="${r*.32}" fill="#eef0f2"/></g>`).join('')+`<path d="M150 40H400M150 40V0" stroke="#a6adb6" stroke-width="12"/>`+W2.trim('#b9bec5')+W2.floor('#c4c8cd','#adb2b8','tile','#7a8089')+bx(0,300,400,22,'#6f7681',{r:10})+`<g class="amb-wave">${[16,96,176,256,336].map(x=>bx(x,278,28,28,'#e2b886',{r:3})).join('')}</g>`+W2.vig(),
+  tutorroom:()=>W2.wall('#f2e7d8','#e8d9c4',{pat:W2.dots('#e9d7bd')})+W2.win(150,50,100,92,'#d4e0ee','#a8c4e8')+W2.frame(26,64,56,70,'#8fa8ee','#f7cf5a')+W2.trim('#e3cfb4')+W2.floor('#ddc3a0','#cba986')+W2.spill(140,80)+bx(10,330,116,10,'#d9a877')+bx(14,320,40,50,'#e6bf8d',{flat:1})+`<path d="M118 330V384" stroke="#9a7452" stroke-width="5"/>`+glowC(96,282,40,'#fff1b8',.5)+`<path d="M110 320l8-28-14-10" stroke="#6b5a52" stroke-width="4" fill="none"/><path d="M86 288l10-14 14 10z" fill="#8fa8ee"/>`+bx(286,350,108,34,'#c9d7f2',{r:12})+bx(290,316,40,18,'#fff',{flat:1,r:8})+W2.vig(),
+  cafe:()=>W2.wall('#f0e2d2','#e4d0bb')+bx(140,124,120,72,'#4a3e3a',{wall:1,r:6})+`<text x="200" y="82" text-anchor="middle" font-family="Jua,sans-serif" font-size="16" fill="#fff">오늘의 라떼</text><path d="M166 100h68" stroke="#fff" stroke-width="3" stroke-dasharray="8 6" opacity=".7"/>`+W2.lamp(76,110)+W2.lamp(324,110)+W2.trim('#d9bfa3')+W2.floor('#ccab88','#b8916c')+bx(0,330,120,64,'#a8795a')+bx(-4,268,128,10,'#efe0cc',{flat:1})+bx(28,262,46,60,'#8a6a5a',{flat:1})+`<rect x="36" y="210" width="30" height="16" rx="4" fill="#3e3431"/>`+W2.steam(80,246)+cyl(300,316,40,6,'#e8cdb0')+`<rect x="297" y="316" width="6" height="40" fill="#a8795a"/>`+cyl(292,306,7,9,'#fff',{noShadow:1})+W2.plant(372,330,1)+W2.vig(),
+  spa:()=>W2.wall('#ddf0f0','#cde6e7',{pat:W2.tilesW('rgba(120,170,180,.3)')})+W2.steam(70,140)+W2.steam(290,120)+W2.trim('#c4dfe3')+W2.floor('#d2e5e9','#b9d3d9','tile','#8fb2ba')+`<ellipse cx="190" cy="350" rx="150" ry="30" fill="#fff" opacity=".18"/>`+bx(272,340,120,48,'#f6f8fa',{r:20})+`<rect x="280" y="294" width="104" height="12" rx="6" fill="#a6d3df"/>`+W2.steam(296,286)+cyl(36,340,14,22,'#f2c94c')+cyl(62,346,14,22,'#f2c94c')+cyl(48,318,14,22,'#f6d56a',{noShadow:1})+W2.vig(),
+  toyshop:()=>W2.wall('#fbe6ef','#f3d6e3',{pat:W2.dots('#f6cfe0')})+`<rect width="400" height="28" fill="#f28fb0"/><text x="200" y="20" text-anchor="middle" font-family="Jua,sans-serif" font-size="17" fill="#fff">말랑 뽑기방</text>`+W2.shelf(140,62,120,1,['#ffd66b','#9be29a','#ff9db8','#bfe6ff','#ffb3a8'])+W2.trim('#ead0dd')+W2.floor('#ecdaf0','#dcc4e3','tile','#b896c8')+W2.clawm(10,330,'#8fc8f0')+W2.clawm(310,330,'#f7b6c8')+W2.vig(),
+  flea:()=>W2.sky('#cfe7f2','#eef4e4')+W2.cloud(60,60)+W2.cloud(250,40,.7)+W2.hills('#cfe9b8',290)+W2.grass('#bcdc9e','#9ec880')+W2.tree(36,330,1.1)+W2.tree(372,330,.9,'#7cc06a')+fq(200,360,250,74,'#f2a0a0',`<path d="M110 397L140 330M170 397L180 330M230 397L220 330M290 397L262 330M84 372H316M100 346H300" stroke="#fff" stroke-width="9" opacity=".5"/>`)+W2.toy(100,384,'#ffd66b')+W2.toy(300,390,'#9be29a')+W2.toy(318,352,'#bfe6ff')+W2.toy(86,354,'#ff9db8')+W2.sign(300,236,82,'교환해요')+`<path d="M341 276V330" stroke="#a8794e" stroke-width="5"/>`+W2.vig(),
+  mountain:()=>W2.sky('#cfe7f2','#eef4e4')+W2.cloud(250,50,.8)+`<path d="M-20 302L90 120L170 250L250 150L420 302Z" fill="${lg([[0,'#bfdcae'],[1,'#a3cd8c']])}"/><path d="M90 120L110 155L95 150L80 165Z" fill="#fff"/><path d="M250 150L268 180L252 175L236 188Z" fill="#fff"/>`+W2.haze('#eef4e4',180,302)+W2.grass('#b9da9c','#9cc77e')+`<path d="M140 400C170 360 190 336 200 302 210 336 230 360 260 400Z" fill="${lg([[0,'#e3d1ab'],[1,'#d6bf92']])}"/>`+W2.tree(40,330,.8,'#5fa65a')+W2.tree(370,334,.9,'#5fa65a')+`<path d="M330 318V252" stroke="#8a6a52" stroke-width="4"/><path d="M332 254h30l-8 9 8 9h-30z" fill="#f2577a"/>`+W2.vig(),
+  studio:()=>W2.wall('#efe7f7','#e2d7ef')+bx(104,250,192,212,'#e6f4fa',{wall:1,r:8})+`<path d="M130 60l40 40M196 60l60 60M146 150l46 46" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".8"/>`+`<path d="M0 226H104M296 226H400" stroke="#b9875c" stroke-width="7" stroke-linecap="round"/><path d="M30 226V302M370 226V302" stroke="#b9875c" stroke-width="4"/>`+W2.trim('#dccfe8')+W2.floor('#e6d9c2','#d2c1a4')+W2.spill(110,150)+bx(16,336,44,80,'#4a3e3a')+ball(38,286,10,'#8a7cc4',{noShadow:1})+ball(38,316,6,'#8a7cc4',{noShadow:1})+W2.vig(),
+  comic:()=>W2.wall('#f5e5d2','#ebd5bc',{pat:W2.dots('#eed6b8')})+W2.shelf(6,46,112,5,['#f28fb0','#8fa8ee','#f7cf5a','#7fcfb9','#c9a7ec','#ffb27a','#9be29a'])+W2.shelf(282,46,112,5,['#ffb27a','#9be29a','#f28fb0','#8fa8ee','#f7cf5a'])+W2.lamp(200,150)+W2.trim('#e1c7a8')+W2.floor('#dcc2a0','#c9a982')+`<ellipse cx="330" cy="362" rx="48" ry="26" fill="${rgr([[0,'#ffb2a8'],[1,'#e3776e']],.4,.3,.8)}"/>`+shd(330,384,52,8,.2)+W2.vig(),
+  garden:()=>W2.sky('#d5ecf6','#f0f6e8')+glowC(330,60,44,'#ffe58a',.7,'amb-glow')+ball(330,60,18,'#ffd56a',{noShadow:1})+W2.cloud(70,64,.8)+`<rect y="250" width="400" height="56" fill="#fff6ea" opacity=".9"/>${[...Array(14)].map((_,i)=>`<rect x="${i*30}" y="236" width="20" height="70" rx="8" fill="${lg([[0,'#fffaf3'],[1,'#efe2d0']],1,0)}"/>`).join('')}`+W2.grass('#bcdc9e','#9ec880')+bx(10,346,120,22,'#a8795a')+[30,60,90,116].map((x,i)=>W2.flower(x,326,['#f28fb0','#f7cf5a','#c9a7ec','#ff9a8a'][i])).join('')+W2.plant(300,340,.9)+W2.plant(356,334,1.1)+cyl(250,382,12,16,'#8fa8ee')+W2.vig(),
+  field:()=>W2.sky('#cfe5f6','#eef4e0')+W2.cloud(80,60)+W2.hills('#c5dd9d',300)+W2.grass('#c5dd9d','#a8c97e')+W2.vig(),
+  street:()=>W2.sky('#d9e7f0','#f3eee6')+W2.house(-10,300,120,140,'#f3d9c0','#e48a6a')+W2.house(290,300,120,150,'#e8dff2','#c9a7ec')+`<rect y="290" width="400" height="14" fill="#efe3d0"/>`+W2.floor('#ddd3c4','#cbbfad','tile','#8f8070')+W2.vig(),
+  night:()=>`<rect width="400" height="310" fill="${lg([[0,'#2f2c55'],[1,'#5d5890']])}"/>`+W2.stars()+glowC(320,70,60,'#fff4b0',.45)+ball(320,70,24,'#fff4c8',{noShadow:1})+`<circle cx="332" cy="62" r="20" fill="#3f3b6e"/>`+W2.house(-10,320,140,120,'#4a4778','#3a3768')+W2.house(260,320,150,150,'#4a4778','#3a3768')+W2.floor('#3d3a68','#2e2b55','tile','#6f6aa0')+`<rect width="400" height="400" fill="${rgr([[0,'#000',0],[.7,'#000',0],[1,'#0c0a20',.4]],.5,.45,.75)}"/>`
+};
+
+function placeSVG(pid){AD=[];const f=ART2[pid]||ART2.home,body=f();return `<svg class="scene-svg" viewBox="0 0 400 400" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><defs>${AD.join('')}</defs>${body}</svg>`}
 
 
 /* =========================================================
@@ -1697,6 +2009,7 @@ function newMalang(gen=1,hue=122,traits=[],species='jelly'){
     stats:{int:0,cul:0,art:0,mar:0,str:0,cha:0,aff:10,stress:10,weight:CFG.startWeight},
     hist:{study:0,exercise:0,play:0,work:0,rest:0,rebel:0},sub:{},rel:{},flags:{},seenEv:{},items:[]};
   NPC_IDS.forEach(id=>m.rel[id]=freshRel());
+  m.persona=rollPersona(species);
   if(S.gift&&S.gift.start)for(const k in S.gift.start)m.stats[k]=clampStat(k,m.stats[k]+S.gift.start[k]);
   for(const tid of traits){
     const t=TRAITS[tid];if(!t)continue;
@@ -1724,6 +2037,7 @@ function migrate(o){
   const OLD={study:'acad',exercise:'jog',play:'park',work:'bakery',rest:'home'};
   o.schedule=o.schedule.map(a=>a&&!SUBS[a]?(OLD[a]||null):a);
   mm.sub=mm.sub||{};
+  if(!mm.persona)mm.persona=rollPersona(mm.species);
   if(!mm.unl)mm.unl=SUB_IDS.filter(id=>isUnlocked(id,mm,o.week));
   if(!o.toys){o.toys={peach:1,bubble:1};o.toyDex={peach:1,bubble:1}}o.toyDex=o.toyDex||{};o.setsDone=o.setsDone||{};
   if(!o.chapSnap)o.chapSnap=Object.fromEntries(['int','cul','art','mar','str','cha'].map(k=>[k,mm.stats[k]||0]));
@@ -1812,12 +2126,12 @@ function shape(sp,w){
 function seeded(n){let s=n;return()=>{s=(s*9301+49297)%233280;return s/233280}}
 function texSVG(sh){
   const {S,base,hw,h,top}=sh,r=seeded(S.bw*7+S.bh);let s='';
-  const shine=(o=.6)=>{const sx=100-hw*.42,sy=top+h*.28;return `<ellipse cx="${sx}" cy="${sy}" rx="${Math.max(7,hw*.17)}" ry="${h*.1}" fill="#fff" opacity="${o}" transform="rotate(-28 ${sx} ${sy})"/><circle cx="${sx+hw*.2}" cy="${sy-h*.08}" r="2.6" fill="#fff" opacity="${Math.min(1,o+.15)}"/>`};
+  const shine=()=>'';
   switch(S.tex){
     case 'jelly':s=`<circle cx="${100-hw*.3}" cy="${base-h*.22}" r="3.2" fill="#fff" opacity=".35"/><circle cx="${100+hw*.42}" cy="${base-h*.38}" r="2.2" fill="#fff" opacity=".3"/>`+shine();break;
     case 'pudding':{const y=top+h*.24;s=`<rect x="0" y="${top-5}" width="200" height="${y-top+5}" fill="#a65a26"/>`;for(let i=0;i<4;i++){s+=`<ellipse cx="${100-hw*.5+i*hw*.33+r()*6}" cy="${y}" rx="${4+r()*3}" ry="${5+r()*6}" fill="#a65a26"/>`}
       s+=`<ellipse cx="${100-hw*.25}" cy="${top+h*.08}" rx="${hw*.18}" ry="2.6" fill="#fff" opacity=".35"/><ellipse cx="${100-hw*.48}" cy="${top+h*.55}" rx="4.5" ry="${h*.13}" fill="#fff" opacity=".4"/>`;break}
-    case 'mochi':for(let i=0;i<16;i++)s+=`<circle cx="${100-hw+r()*hw*2}" cy="${top+r()*h}" r="${.8+r()*1.2}" fill="#e5d9cb"/>`;s+=`<ellipse cx="${100-hw*.28}" cy="${top+h*.32}" rx="${hw*.36}" ry="${h*.2}" fill="#fff" opacity=".75"/>`;break;
+    case 'mochi':for(let i=0;i<16;i++)s+=`<circle cx="${100-hw+r()*hw*2}" cy="${top+r()*h}" r="${.8+r()*1.2}" fill="#e5d9cb"/>`;s+=`<ellipse cx="${100-hw*.28}" cy="${top+h*.32}" rx="${hw*.36}" ry="${h*.2}" fill="#fff" opacity=".3"/>`;break;
     case 'marsh':s=`<rect x="${100-hw}" y="${top}" width="${hw*.38}" height="${h}" fill="#fff" opacity=".5"/><rect x="${100+hw*.55}" y="${top}" width="${hw*.45}" height="${h}" fill="#d29aac" opacity=".22"/><ellipse cx="100" cy="${top+5}" rx="${hw*.8}" ry="5" fill="#fff" opacity=".7"/>`;break;
     case 'bread':s=`<rect x="${100-hw+6}" y="${top+h*.3}" width="${hw*2-12}" height="${h*.66}" rx="12" fill="#fbecd0"/>`;for(let i=0;i<14;i++)s+=`<ellipse cx="${100-hw*.8+r()*hw*1.6}" cy="${top+h*.38+r()*h*.52}" rx="${1+r()*1.6}" ry="${.7+r()}" fill="#e6c995"/>`;s+=`<ellipse cx="${100-hw*.35}" cy="${top+h*.1}" rx="${hw*.25}" ry="3" fill="#fff" opacity=".35"/>`;break;
     case 'bun':s=`<path d="M${100-hw*.36} ${top+h*.17}Q${100-hw*.18} ${top+h*.05} 100 ${top+h*.14}T${100+hw*.36} ${top+h*.13}" stroke="#fff6e0" stroke-width="7" fill="none" stroke-linecap="round"/>`;for(let i=0;i<7;i++)s+=`<ellipse cx="${100-hw*.55+r()*hw*1.1}" cy="${top+h*.28+r()*h*.18}" rx="1.8" ry="1" fill="#fff4dc" transform="rotate(${r()*80-40} ${100-hw*.55+r()*hw*1.1} ${top+h*.3})"/>`;s+=shine(.45);break;
@@ -1829,16 +2143,43 @@ function texSVG(sh){
   }
   return s;
 }
+// 말랑이 2.5D 재질: 왼쪽 위 빛 → 몸에 밝은 면/어두운 면, 테두리 반사광, 바닥 반사, 재질별 광택
+const MATV={jelly:{gloss:1,tr:1,rim:.6,shade:.32,out:.32},pudding:{gloss:.7,rim:.5,shade:.3,out:.38},mochi:{gloss:0,matte:1,rim:.4,shade:.3,out:.2},
+  marsh:{gloss:.08,matte:1,rim:.45,shade:.28,out:.24},bread:{gloss:.12,rim:.32,shade:.3,out:.55},bun:{gloss:.55,rim:.4,shade:.3,out:.38},
+  butter:{gloss:.5,rim:.55,shade:.22,out:.32,satin:1},crunch:{gloss:.65,rim:.5,shade:.3,out:.38,sugar:1},cheese:{gloss:.25,rim:.42,shade:.28,out:.32},beads:{gloss:1,tr:1,rim:.6,shade:.26,out:.28}};
+let SP_KEY=null;
+function spKeyOf(S){if(!SP_KEY)SP_KEY=new Map(Object.entries(SPECIES).map(([k,v])=>[v,k]));return SP_KEY.get(S)||'jelly'}
 function bodyParts(sh,c,gid,cid,w){
-  const S=sh.S;
-  let s=`<clipPath id="${cid}"><path d="${sh.d}"/></clipPath><path d="${sh.d}" fill="url(#${gid})" fill-opacity="${S.alpha||1}"/><g clip-path="url(#${cid})">${texSVG(sh)}</g>`;
-  if(w>=CFG.fat)s+=`<path d="M${100-sh.hw*.5} ${sh.base-sh.h*.2}Q100 ${sh.base-sh.h*.05} ${100+sh.hw*.5} ${sh.base-sh.h*.2}" fill="none" stroke="${c[2]}" stroke-opacity=".5" stroke-width="2" stroke-linecap="round"/>`;
-  return s+`<path d="${sh.d}" fill="none" stroke="${c[2]}" stroke-opacity="${S.stroke?.95:.5}" stroke-width="${S.stroke||1.6}" stroke-linejoin="round"/>`;
+  const S=sh.S,V=MATV[spKeyOf(S)]||MATV.jelly,{hw,h,top,base,d}=sh;
+  const F=gid+'f',H=gid+'h',A=gid+'o',U=gid+'u',SH=gid+'sh';
+  const hx=100-hw*.36,hy=top+h*.25;
+  let defs=`<defs>
+    <radialGradient id="${F}" cx=".34" cy=".26" r=".95"><stop offset="0" stop-color="#fff" stop-opacity="${V.matte?.22:.3}"/><stop offset=".42" stop-color="#fff" stop-opacity="0"/><stop offset=".74" stop-color="${c[2]}" stop-opacity="0"/><stop offset="1" stop-color="${c[2]}" stop-opacity="${V.shade*1.85}"/></radialGradient>
+    <radialGradient id="${H}"><stop offset="0" stop-color="#fff" stop-opacity="${V.matte?.35:.25+V.gloss*.6}"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+    <linearGradient id="${A}" x1="0" y1="0" x2="0" y2="1"><stop offset=".62" stop-color="${c[2]}" stop-opacity="0"/><stop offset="1" stop-color="${c[2]}" stop-opacity="${V.shade*.9}"/></linearGradient>
+    <radialGradient id="${U}"><stop offset="0" stop-color="#fff" stop-opacity="${V.tr?.42:0}"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+    <radialGradient id="${SH}"><stop offset="0" stop-color="${V.tr?c[1]:'#4a2c18'}" stop-opacity="${V.tr?.42:.3}"/><stop offset=".6" stop-color="${V.tr?c[1]:'#4a2c18'}" stop-opacity="${V.tr?.18:.12}"/><stop offset="1" stop-color="#4a2c18" stop-opacity="0"/></radialGradient></defs>`;
+  const bb=`x="${100-hw-24}" y="${top-24}" width="${hw*2+48}" height="${h+40}"`;
+  let s=defs+`<clipPath id="${cid}"><path d="${d}"/></clipPath><path d="${d}" fill="url(#${gid})" fill-opacity="${S.alpha||1}"/><g clip-path="url(#${cid})">${texSVG(sh)}`;
+  if(V.tr)s+=`<ellipse cx="100" cy="${top+h*.58}" rx="${hw*.72}" ry="${h*.42}" fill="url(#${U})"/>`;
+  s+=`<rect ${bb} fill="url(#${F})"/><rect ${bb} fill="url(#${A})"/>`;
+  s+=`<ellipse cx="100" cy="${base+3}" rx="${hw*.78}" ry="${h*.08}" fill="#fff4e2" opacity="${V.tr?.22:.3}"/>`;
+  s+=`<path d="${d}" fill="none" stroke="#fff" stroke-opacity="${V.rim}" stroke-width="5" transform="translate(2.6 3.2)"/>`;
+  s+=`<path d="${d}" fill="none" stroke="${c[2]}" stroke-opacity="${V.shade}" stroke-width="8" transform="translate(-3.4 -4.2)"/>`;
+  if(V.matte)s+=`<ellipse cx="${hx+hw*.06}" cy="${hy+h*.06}" rx="${hw*.48}" ry="${h*.26}" fill="url(#${H})" transform="rotate(-18 ${hx} ${hy})"/>`;
+  else{s+=`<ellipse cx="${hx}" cy="${hy}" rx="${Math.max(9,hw*.3)}" ry="${h*.15}" fill="url(#${H})" transform="rotate(-24 ${hx} ${hy})"/>`;
+    if(V.satin)s+=`<path d="M${100-hw*.7} ${top+h*.42}Q100 ${top+h*.3} ${100+hw*.7} ${top+h*.42}" stroke="#fff" stroke-opacity=".28" stroke-width="5" fill="none" stroke-linecap="round"/>`;
+    if(V.gloss>=.55)s+=`<ellipse cx="${hx-hw*.06}" cy="${hy-h*.04}" rx="3.4" ry="2.6" fill="#fff" opacity=".92" transform="rotate(-24 ${hx} ${hy})"/>`;
+    if(V.gloss>=.9)s+=`<circle cx="${hx+hw*.12}" cy="${hy-h*.08}" r="1.6" fill="#fff" opacity=".85"/><path d="M${100+hw*.55} ${base-h*.5}q${hw*.12} ${h*.18} 0 ${h*.34}" stroke="#fff" stroke-opacity=".45" stroke-width="2.4" fill="none" stroke-linecap="round"/>`}
+  if(V.sugar){const r=seeded(hw*13);for(let i=0;i<10;i++){const x=100-hw*.8+r()*hw*1.6,y=top+h*(.1+r()*.6);s+=`<path d="M${x} ${y-2.6}l.9 1.7 1.7.9-1.7.9-.9 1.7-.9-1.7-1.7-.9 1.7-.9z" fill="#fff" opacity="${.5+r()*.4}"/>`}}
+  s+=`</g>`;
+  if(w>=CFG.fat)s+=`<path d="M${100-hw*.5} ${base-h*.2}Q100 ${base-h*.05} ${100+hw*.5} ${base-h*.2}" fill="none" stroke="${c[2]}" stroke-opacity=".45" stroke-width="2" stroke-linecap="round"/>`;
+  return s+`<path d="${d}" fill="none" stroke="${c[2]}" stroke-opacity="${S.stroke?.75:V.out}" stroke-width="${S.stroke?S.stroke*.8:1.4}" stroke-linejoin="round"/>`;
 }
 function faceSVG(type,sh){
   const ey=sh.ey,lx=89,rx=111,my=ey+10,ink='#243026',mo='#6b3a3a';
   const P=(d,w=2.3)=>`<path d="${d}" fill="none" stroke="${ink}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`;
-  const E=(x,ry=4.4)=>`<ellipse class="eye" cx="${x}" cy="${ey}" rx="3.3" ry="${ry}" fill="${ink}"/>`;
+  const E=(x,ry=4.4)=>`<ellipse class="eye" cx="${x}" cy="${ey}" rx="3.3" ry="${ry}" fill="${ink}"/><circle class="eye" cx="${x-1.1}" cy="${ey-ry*.42}" r="1.05" fill="#fff" opacity=".9"/>`;
   const eyes=E(lx)+E(rx);
   const blush=(c='#ec8c98')=>`<ellipse cx="${lx-11}" cy="${ey+8}" rx="5.5" ry="3" fill="${c}" opacity=".45"/><ellipse cx="${rx+11}" cy="${ey+8}" rx="5.5" ry="3" fill="${c}" opacity=".45"/>`;
   const sw=(x,y)=>`<path class="sweat" d="M${x} ${y}C${x-4} ${y+5} ${x-3.5} ${y+10} ${x} ${y+10}C${x+3.5} ${y+10} ${x+4} ${y+5} ${x} ${y}Z" fill="#a8d3ee"/>`;
@@ -1886,7 +2227,7 @@ function avatarVB(sp,w,acc){
 function malangSVG({sp='jelly',hue=122,pal=null,w=5,face='normal',acc=null,vb=null}={}){
   const id='sg'+(++UID),sh=shape(sp,w),c=palOf(sp,hue,pal);
   const plate=sp==='pudding'?`<ellipse cx="100" cy="171" rx="${sh.hw+14}" ry="7" fill="#fffaf2" stroke="#e5d8c8" stroke-width="1.5"/>`:'';
-  return `<svg class="slime" viewBox="${vb||'-25 40 250 145'}" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c[0]}"/><stop offset="1" stop-color="${c[1]}"/></linearGradient></defs><ellipse cx="100" cy="171" rx="${sh.hw+sh.k*.5}" ry="6" fill="#000" opacity=".12"/>${plate}<g class="sb i-${sh.S.idle}">${bodyParts(sh,c,id,id+'c',w)}${faceSVG(face,sh)}${accSVG(acc,sh)}</g></svg>`;
+  return `<svg class="slime" viewBox="${vb||'-25 40 250 145'}" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c[0]}"/><stop offset="1" stop-color="${c[1]}"/></linearGradient></defs><ellipse cx="100" cy="172" rx="${sh.hw+sh.k*.5+12}" ry="10" fill="url(#${id}sh)"/><ellipse cx="100" cy="171" rx="${sh.hw*.8}" ry="3.2" fill="#3e2a20" opacity=".22"/>${plate}<g class="sb i-${sh.S.idle}">${bodyParts(sh,c,id,id+'c',w)}${faceSVG(face,sh)}${accSVG(acc,sh)}</g></svg>`;
 }
 function myAcc(){const f=G.malang.flags;return f.wearFlower?'flower':f.wearBand?'band':null}
 function renderMalang(){
@@ -1894,7 +2235,7 @@ function renderMalang(){
   $('#gm1').setAttribute('stop-color',c[0]);$('#gm2').setAttribute('stop-color',c[1]);
   $('#mlgInner').innerHTML=bodyParts(sh,c,'gMain','cMain',m.stats.weight)+faceSVG(ui.face,sh)+accSVG(myAcc(),sh);
   $('#mlgAge').setAttribute('transform',`translate(100 170) scale(${st.scale}) translate(-100 -170)`);
-  $('#mlgShadow').setAttribute('rx',(sh.hw+sh.k*.5)*st.scale);
+  $('#mlgShadow').setAttribute('rx',(sh.hw+sh.k*.5+12)*st.scale);$('#mlgAO').setAttribute('rx',sh.hw*.8*st.scale);
   const p=$('#mlgPlate');p.style.display=m.species==='pudding'?'':'none';p.setAttribute('rx',(sh.hw+14)*st.scale);
 }
 function setFace(f){if(SQ.press&&f!=='press'){ui.prevFace=f;return}ui.face=f;renderMalang()}
@@ -2105,12 +2446,11 @@ function renderHeader(){
   const m=G.malang,st=stageOf(G.week),key=m.species+(m.shiny?'s':'')+(myAcc()||'');
   $('#money').textContent=G.money;
   $('#mName').textContent=m.name;
-  $('#mSub').textContent=(m.gen>1?`${m.gen}대째 · `:'')+`${st.name} ${spName(m)} 말랑이`;
+  $('#mSub').textContent=(m.gen>1?`${m.gen}대째 · `:'')+`${st.name} · ${persona().adj} ${spName(m)} 말랑이`;
   if(ui.avKey!==key){ui.avKey=key;$('#plateAv').innerHTML=malangSVG({sp:m.species,hue:m.hue,pal:m.pal,face:'normal',acc:myAcc(),vb:avatarVB(m.species,5,myAcc())})}
   const wk=G.phase==='ending'?CFG.weeks+1:G.week;
-  $('#beads').innerHTML=Array.from({length:CFG.weeks},(_,i)=>`<i class="${i+1<wk?'on':i+1===wk?'now':''}${(i+1)%4===0?' chp':''}"></i>`).join('');
-  const t=tendency();$('#mTend').innerHTML=ic(t.i)+t.t;
-  $('#relDot').hidden=!metIds().length||!!ui.relSeen;
+  /* 주간 진행·성장 방향 표시는 제거 (결과를 미리 알 수 없도록) */
+  
   renderStrip();renderActions();
 }
 function renderAll(){renderHeader();renderStats();renderMalang()}
@@ -2154,7 +2494,9 @@ const HELP=`<ul class="help">
 <li>12주가 지나면 말랑이의 이야기를 돌아보고, 말랑이가 남긴 가챠캡슐 3개 중 하나를 열어 다음 말랑이를 만나요.</li></ul>`;
 
 /* ---------- 주간 계획: 7칸 스트립 + 카테고리 탭 + 같은 규격의 활동 카드 ---------- */
-function setMode(m){ui.mode=m;document.body.className='mode-'+m;renderStrip();renderActions();if(m==='plan')renderPlanner()}
+function setMode(m){ui.mode=m;document.body.className='mode-'+m;renderStrip();renderActions();if(m==='plan')renderPlanner();updHz();setTimeout(updHz,420)}
+// 방의 바닥선을 말랑이가 앉은 러그 높이에 맞춘다 (화면 모드에 따라 무대 높이가 바뀌므로)
+function updHz(){const st=$('#stage'),mg=$('#mlg');if(!st||!mg)return;const w=mg.getBoundingClientRect().width;$('#app').style.setProperty('--hz',Math.round(st.offsetTop+st.offsetHeight-w*.2)+'px')}
 function firstEmpty(){const i=G.schedule.findIndex(x=>!x);return i<0?0:i}
 function enterPlan(day){
   if(G.phase!=='plan'||ui.running)return;
@@ -2250,10 +2592,13 @@ function renderActions(){
     $('#aGo').onclick=()=>{if(G.schedule.every(Boolean))runWeek()};
     $('#aClr').onclick=()=>{Sound.play('click');G.schedule=Array(7).fill(null);ui.pickerDay=0;ui.infoId=null;save();renderStrip();renderPlanner();renderActions()};
   }else{
-    if(G.phase==='ending'){el.innerHTML=`<button class="tbtn grow1" id="aEnd">${ic('star')}12주의 이야기 보기</button>`;$('#aEnd').onclick=()=>{Sound.play('click');resumeEnding()};return}
-    el.innerHTML=full?`<button class="tbtn ghost sq" id="aEdit" aria-label="일정 고치기">${ic('pencil')}</button><button class="tbtn grow1" id="aGo">${ic('play')}${G.week}주차 시작</button>`
-      :`<button class="tbtn grow1" id="aPlan">${ic('calendar')}${G.week}주차 일정 짜기</button>`;
-    if($('#aEdit'))$('#aEdit').onclick=()=>enterPlan(0);
+    const end=G.phase==='ending',dot=metIds().length&&!ui.relSeen;
+    const main=end?`<button class="dk main" id="aEnd"><span class="pop">${ic('star')}</span>12주의 이야기<small>엔딩 보러 가기</small></button>`
+      :full?`<button class="dk main" id="aGo"><span class="pop">${ic('play')}</span>${G.week}주차 시작<small>일정은 아래 칸을 눌러 고쳐요</small></button>`
+      :`<button class="dk main" id="aPlan"><span class="pop">${ic('calendar')}</span>일정 짜기<small>${G.week}주차 · ${G.schedule.filter(Boolean).length}/7일</small></button>`;
+    el.innerHTML=`<div class="dock"><button class="dk" data-open="rel"><span class="pop">${ic('rel')}</span>관계${dot?'<i class="dot" id="relDot"></i>':''}</button>${main}<button class="dk" data-open="toys"><span class="pop">${ic('toybox')}</span>장난감</button></div>`;
+    el.querySelectorAll('.dk[data-open]').forEach(b=>b.onclick=()=>openPanel(b.dataset.open));
+    if($('#aEnd'))$('#aEnd').onclick=()=>{Sound.play('click');resumeEnding()};
     if($('#aGo'))$('#aGo').onclick=()=>runWeek();
     if($('#aPlan'))$('#aPlan').onclick=()=>enterPlan();
   }
@@ -2278,7 +2623,7 @@ function renderDex(){
     return `<div class="etile sil">${malangSVG({sp:x})}<b>???</b><small>아직 몰라요</small></div>`}).join('');
   const ends=ENDING_ORDER.map(k=>d.end[k]?`<div class="etile">${ic(ENDINGS[k].icon)}${ENDINGS[k].title}</div>`:`<div class="etile no">${ic('qmark')}???</div>`).join('');
   const npcs=NPC_IDS.map(id=>d.npc[id]?`<div class="etile">${malangSVG({sp:NPCS[id].sp,pal:NPCS[id].pal,w:NPCS[id].w,face:NPCS[id].face,acc:NPCS[id].acc})}<b>${NPCS[id].name}</b></div>`:`<div class="etile no">${ic('qmark')}???</div>`).join('');
-  const lin=G.lineage.length?G.lineage.slice().reverse().map(l=>`<div>${ic(ENDINGS[Object.keys(ENDINGS).find(k=>ENDINGS[k].title===l.title)]?.icon||'blob')}<span>${l.gen}대 ${esc(l.name||'말랑이')} (${SPECIES[l.species||'jelly'].short}) · ${l.title}</span></div>`).join(''):'<div class="sub">아직 다 자란 말랑이가 없어요.</div>';
+  const lin=G.lineage.length?G.lineage.slice().reverse().map(l=>`<div>${ic(ENDINGS[Object.keys(ENDINGS).find(k=>ENDINGS[k].title===l.title)]?.icon||'blob')}<span>${l.gen}대 ${esc(l.name||'말랑이')} (${l.persona&&PERSONA[l.persona]?PERSONA[l.persona].adj+' ':''}${SPECIES[l.species||'jelly'].short}) · ${l.title}</span></div>`).join(''):'<div class="sub">아직 다 자란 말랑이가 없어요.</div>';
   $('#pin').innerHTML=`${panelHead('dex','도감')}<div class="pb">
    <div class="sec">말랑이 종류 ${spR}/${SP_ORDER.length}</div><div class="egrid">${sps}</div>
    <p class="hint" style="margin-top:8px">어떻게 키우고 누구와 친해지느냐에 따라 다음 캡슐에서 나오는 종류가 달라져요.</p>
@@ -2397,7 +2742,7 @@ function runEvent(ev,c){
         const npcFace=nd>0?'happy':nd<0?(show==='cheese'?'grumpy':'sad'):undefined;
         const meFace=mood==='good'?'happy':mood==='bad'?'sad':'normal';
         openOv(`${sceneHTML(place,show,{tag:'선택 결과',me:meFace,npcFace,noAcc:ev.noAcc,sparkle:mood==='good'})}<div class="ev-b"><p class="ev-p ev-r">${r.text}</p>${out.length?`<div class="fxl">${out.map(f=>`<div>${icx(f.i)}<span>${f.t}</span></div>`).join('')}</div>`:''}<button class="tbtn wide" id="evOk">확인</button></div>`);
-        $('#evOk').onclick=()=>{Sound.play('click');closeOv();resolve({mood,next:r.next})};
+        $('#evOk').onclick=()=>{Sound.play('click');closeOv();resolve({mood,next:r.next,met:met?r.meet:null})};
       },260);
     });
   });
@@ -2436,6 +2781,9 @@ function doActivity(id){
     if(Math.random()<.35)addMem(friend,pick(FRIEND_MEM));
     line=`${jo(n,'이랑','랑')} 놀자!`;sub=`${jo(n,'과','와')} 더 친해졌어요`;
   }
+  const Pp=persona(),lk=Pp.like.includes(cat)||Pp.like.includes(id),dl=Pp.dis.includes(cat)||Pp.dis.includes(id);
+  if(lk){d.stress=(d.stress||0)-3;if(!A.friend&&Math.random()<.6)line=talk('love')}
+  else if(dl){d.stress=(d.stress||0)+3;if(!A.friend&&Math.random()<.6)line=talk('hate')}
   return {d,line,anim:A.anim,face:tired?'tired':(A.face||(cat==='work'?'focus':'happy')),prop:A.prop,hearts:A.hearts,title:A.friend?`${jo(NPCS[friend].name,'이랑','랑')} 놀았어요`:title,sub,friend};
 }
 // 저녁 식사: 스트레스가 높으면 "가끔" 폭식한다 (확률·주 2회 제한).
@@ -2461,7 +2809,7 @@ function setScenery(pid,tag){
   t.hidden=!tag;if(tag)t.innerHTML=ic('pin')+P.n;
   if(ui.place===pid)return;ui.place=pid;
   sc.classList.add('fade');
-  setTimeout(()=>{sc.innerHTML=placeSVG(pid);sc.classList.remove('fade')},110);
+  setTimeout(()=>{$('#stage').classList.toggle('at-home',pid==='home');sc.innerHTML=pid==='home'?'':placeSVG(pid);sc.classList.remove('fade')},110);
 }
 function tryCameo(sub,force){
   const m=G.malang;
@@ -2511,7 +2859,7 @@ async function runWeek(){
     if(e){
       setProp(null);await wait(150);
       let res=await runEvent(e,c);while(res.next)res=await runEvent(res.next,c);evCount++;lastEv=i;ev.events.push(e.title);
-      rcLog('alert',e.title,'이상한 하루였어요');setFace(res.mood==='good'?'happy':res.mood==='bad'?'sad':moodFace());speak(talk(res.mood==='bad'?'evBad':'evGood'),1300);
+      rcLog('alert',e.title,'이상한 하루였어요');setFace(res.mood==='good'?'happy':res.mood==='bad'?'sad':moodFace());speak(res.met&&NPCS[res.met]?talk('meet',{n:NPCS[res.met].name}):talk(res.mood==='bad'?'evBad':'evGood'),1400);
       await wait(500);
     }else if(!busy&&!r.friend){
       const cm=tryCameo(id);
@@ -2567,6 +2915,7 @@ function evalEnding(){
   const c=[['scholar',s.int+fb('int')],['athlete',s.str+fb('str')],['artist',s.art+(F.artWin||0)*8+fb('art')],['master',s.mar+(F.martialWin||0)*8+fb('mar')],['star',s.cha+(F.scouted?10:0)+(F.festWin?4:0)+fb('cha')],['buddy',s.aff],['boss',G.money/15]].sort((a,b)=>b[1]-a[1])[0];
   return c[1]>=65?c[0]:'normal';
 }
+function weekTalk(d){const s=G.malang.stats,g=AB.reduce((a,k)=>a+Math.max(0,d[k]||0),0);if(s.stress>=70)return talk('weekTired');if(g>=8&&Math.random()<.7)return talk('weekGood');return Math.random()<.5?weekComment(d):talk('idleHappy')}
 function weekComment(d){
   const s=G.malang.stats;
   if(s.stress>=80)return '요즘 너무 힘들어... 좀 쉬고 싶어';
@@ -2600,7 +2949,7 @@ function showSummary(diff,ev,stageUp,noPlay,relCh,newU,snap,chap){
   if(ev.toys&&ev.toys.length)notes.push(['toybox',`새 장난감: ${ev.toys.map(k=>TOYS[k].n).join(', ')}`]);
   if(noPlay)notes.push(['sleepy','이번 주엔 같이 못 놀아서 조금 서운해해요']);
   const end=G.phase==='ending',t=tendency();
-  openOv(`${sceneHTML('home',null,{me:s.stress>=70?'tired':'happy',sparkle:true})}<div class="ev-b"><div class="ev-t big">${G.week-1}주차 결과</div><p class="ev-p">“${weekComment(diff)}”</p>${chap?`<div class="chap"><div class="chap-h">${ic('envelope')}<b class="cute">${chap.n}장 마무리 · 용돈 봉투</b><span class="cute chap-c">+${chap.allow}</span></div><div class="sub">4주 동안 ${chap.top.length?chap.top.map(([k])=>STATS[k].n).join(', ')+' 쪽으로 가장 많이 자랐어요.':'푹 쉬며 지냈어요.'} 친밀도와 성장만큼 용돈이 두둑해요.</div></div>`:''}<div class="sp-line">${ic(t.i)}${t.t} · 점선은 지난주 모습</div>${radar}<div class="drows">${rows}</div>${notes.length?`<div class="notes">${notes.map(([i,n])=>`<div>${icx(i)}<span>${n}</span></div>`).join('')}</div>`:''}<button class="tbtn wide" id="shOk">${end?ic('star')+'12주의 이야기 보기':'다음 주 계획하기'}</button></div>`);
+  openOv(`${sceneHTML('home',null,{me:s.stress>=70?'tired':'happy',sparkle:true})}<div class="ev-b"><div class="ev-t big">${G.week-1}주차 결과</div><p class="ev-p">“${weekTalk(diff)}”</p>${chap?`<div class="chap"><div class="chap-h">${ic('envelope')}<b class="cute">${chap.n}장 마무리 · 용돈 봉투</b><span class="cute chap-c">+${chap.allow}</span></div><div class="sub">4주 동안 ${chap.top.length?chap.top.map(([k])=>STATS[k].n).join(', ')+' 쪽으로 가장 많이 자랐어요.':'푹 쉬며 지냈어요.'} 친밀도와 성장만큼 용돈이 두둑해요.</div></div>`:''}<div class="sp-line">점선은 지난주 모습</div>${radar}<div class="drows">${rows}</div>${notes.length?`<div class="notes">${notes.map(([i,n])=>`<div>${icx(i)}<span>${n}</span></div>`).join('')}</div>`:''}<button class="tbtn wide" id="shOk">${end?ic('star')+'12주의 이야기 보기':'다음 주 계획하기'}</button></div>`);
   if(chap)setTimeout(()=>{Sound.play('coin');setTimeout(()=>Sound.play('coin'),180)},700);
   if(stageUp)setTimeout(()=>Sound.play('grow'),900);else if(newU.length)setTimeout(()=>Sound.play('meet'),900);
   $('#shOk').onclick=()=>{
@@ -2863,7 +3212,7 @@ function placeToyAtHead(el){const st=$('#stage').getBoundingClientRect(),mr=$('#
 async function playToy(id,auto){
   if(ui.toyBusy||ui.running||SQ.press||!TOYS[id])return;ui.toyBusy=true;
   const T=TOYS[id],mode=TOY_MODE[id]||'hug',el=$('#toyPlay'),S=SPECIES[G.malang.species];
-  const fav=T.tags.some(g=>(SP_FAV[G.malang.species]||[]).includes(g));
+  const fav=T.tags.some(g=>(SP_FAV[G.malang.species]||[]).includes(g)||persona().toy.includes(g));
   el.removeAttribute('style');el.innerHTML=toySVG(id);el.className='show tp-in';Sound.play('pick');
   const say=()=>speak(Math.random()<.45?talk('toy'):pick(TOY_SAY[mode]),1500);
   await sleepMs(550);
@@ -2989,7 +3338,7 @@ function showEnding(){
 }
 function showFarewell(){
   const m=G.malang,s=m.stats,bf=bestFriend(),S=SPECIES[m.species];
-  const lines=[s.aff>=60?'헤헤... 많이 만져 줘서 고마워. 덕분에 아주 말랑해졌어.':s.aff>=30?'12주 동안 재밌었어. 진짜로.':'...가끔은 생각날 것 같아. 아마도.'];
+  const lines=[talk('bye')];
   if(bf)lines.push(`${NPCS[bf].name}한테도 인사 전해 줘.`);
   lines.push(pick(S.touch)+' 마지막으로 한 번만 눌러 줘.','아, 맞다! 선물 놓고 갈게.');
   openOv(`${sceneHTML('home',null,{me:s.aff>=60?'cry':'happy'})}<div class="ev-b"><div class="ev-t big">안녕, ${esc(m.name)}</div>
@@ -3032,17 +3381,17 @@ function openCapsule(i){
     if(isNew)setTimeout(()=>Sound.play('meet'),400);if(c.shiny)setTimeout(()=>Sound.play('good'),800);
     openOv(`${sceneHTML('home',null,{tag:'새 말랑이',me:'happy',sparkle:true,pop:true})}<div class="ev-b"><div class="ev-t big">${c.shiny?SHINY[c.sp].n+' 말랑이':S.name}</div>
       <div style="text-align:center;margin-top:6px;display:flex;gap:6px;justify-content:center;flex-wrap:wrap">${c.shiny?'<span class="rare">레어 말랑이!</span>':''}${isNew?'<span class="hatch-new">처음 보는 말랑이!</span>':''}${!isNew&&newShiny?'<span class="hatch-new">처음 보는 색!</span>':''}</div>
-      <p class="ev-p">${S.desc}</p>
+      <p class="ev-p">${S.desc}</p><div class="psn"><b class="cute">성격: ${persona().n}</b><span>${persona().desc}</span><span class="sub">좋아하는 것 ${likeTxt(persona().like)} · 싫어하는 것 ${likeTxt(persona().dis)}</span></div>
       <div class="fxl"><div>${ic('blob')}<span>촉감: ${S.feel}</span></div><div>${ic('gift')}<span>타고난 재주: ${S.giftText}</span></div>${m.traits.map(t=>TRAITS[t]?`<div>${icx(TRAITS[t].i)}<span>${TRAITS[t].n}: ${traitDesc(t)}</span></div>`:'').join('')}</div>
       <button class="tbtn wide" id="hOk">${esc(m.name)} 키우기 시작</button></div>`);
-    $('#hOk').onclick=()=>{Sound.play('click');closeOv();setAnim('squish');setFace('happy');speak('...말랑?',2000);hearts(4);setTimeout(()=>{setAnim('idle');setFace(moodFace())},1400)};
+    $('#hOk').onclick=()=>{Sound.play('click');closeOv();setAnim('squish');setFace('happy');speak(persona().L.hello[0],2200,'sh');hearts(4);setTimeout(()=>{setAnim('idle');setFace(moodFace())},1400)};
   },2400);
 }
 function nextGen(c){
   const e=ENDINGS[G.endingId]||ENDINGS.normal,m=G.malang,pass=passTraits(),sp=c.sp;
-  G.lineage.push({gen:m.gen,id:m.id,name:m.name,species:m.species,shiny:!!m.shiny,title:e.title,icon:e.icon,hue:m.hue,traits:pass,stats:{...m.stats}});
+  G.lineage.push({gen:m.gen,id:m.id,name:m.name,species:m.species,persona:m.persona,shiny:!!m.shiny,title:e.title,icon:e.icon,hue:m.hue,traits:pass,stats:{...m.stats}});
   const hue=clamp(Math.round(m.hue+(Math.random()*36-18)),95,165);
-  G.malang=newMalang(m.gen+1,hue,pass,sp);G.dex.sp[sp]='raised';
+  G.malang=newMalang(m.gen+1,hue,pass,sp);G.malang.persona=rollPersona(sp,m.persona);G.dex.sp[sp]='raised';
   if(c.shiny){G.malang.shiny=true;G.malang.pal=SHINY[sp].pal;G.dex.shiny=G.dex.shiny||{};G.dex.shiny[sp]=1}
   const bonus=pass.reduce((a,t)=>a+((TRAITS[t]&&TRAITS[t].money)||0),0);
   Object.assign(G,{week:1,money:CFG.startMoney+bonus,schedule:Array(7).fill(null),phase:'plan',endingId:null,capsules:null,endStep:null,nextEgg:null,touches:0,log:[]});
@@ -3050,7 +3399,7 @@ function nextGen(c){
   ui.relSeen=false;ui.face='normal';save();renderAll();setAnim('idle');
 }
 function showIntro(){
-  openOv(`${sceneHTML('home',null,{me:'happy',sparkle:true})}<div class="ev-b"><div class="ev-t big">말랑이가 태어났어요</div><p class="ev-p">이 아이는 기본 젤리 말랑이예요. 꾹 누르고, 위로 늘리고, 흔들어 보세요.<br>이 세계엔 찹쌀떡, 빵, 크런치... 온갖 촉감의 말랑이가 살고 있어요.</p><div style="margin-top:12px">${HELP}</div><button class="tbtn wide" id="introOk">키우기 시작</button></div>`);
+  openOv(`${sceneHTML('home',null,{me:'happy',sparkle:true})}<div class="ev-b"><div class="ev-t big">말랑이가 태어났어요</div><p class="ev-p">이 아이는 기본 젤리 말랑이예요. 성격은 <b>${persona().n}</b>, ${persona().desc}예요. 꾹 누르고, 위로 늘리고, 흔들어 보세요.<br>이 세계엔 찹쌀떡, 빵, 크런치... 온갖 촉감의 말랑이가 살고 있어요.</p><div style="margin-top:12px">${HELP}</div><button class="tbtn wide" id="introOk">키우기 시작</button></div>`);
   $('#introOk').onclick=()=>{Sound.unlock();Sound.play('grow');closeOv();setAnim('squish');setFace('happy');speak('말랑!',1500);hearts(3);setTimeout(()=>{setAnim('idle');setFace(moodFace())},1200)};
 }
 
@@ -3082,7 +3431,7 @@ function idleLine(){
 }
 function startRename(){
   if(ui.running)return;Sound.play('click');
-  openOv(`<div class="ev-b" style="padding-top:22px"><div class="ev-t big">이름 바꾸기</div><p class="ev-p">새 이름을 지어 주세요. (최대 8글자)</p><div class="rename"><input id="nmIn" maxlength="8" value="${esc(G.malang.name)}" aria-label="이름"><button class="tbtn sq" id="nmOk" aria-label="확인">${ic('check')}</button></div></div>`);
+  openOv(`<div class="ev-b" style="padding-top:22px"><div class="ev-t big">이름 바꾸기</div><p class="ev-p">${persona().adj} 성격의 ${spName(G.malang)} 말랑이예요. 새 이름을 지어 주세요. (최대 8글자)</p><div class="rename"><input id="nmIn" maxlength="8" value="${esc(G.malang.name)}" aria-label="이름"><button class="tbtn sq" id="nmOk" aria-label="확인">${ic('check')}</button></div></div>`);
   const inp=$('#nmIn');setTimeout(()=>{inp.focus();inp.select()},250);
   const done=()=>{const v=inp.value.trim().slice(0,8)||G.malang.name;G.malang.name=v;save();closeOv();renderHeader();speak(`${v}! 좋아!`,1300);Sound.play('good')};
   $('#nmOk').onclick=done;inp.addEventListener('keydown',e=>{if(e.key==='Enter')done()});
@@ -3095,7 +3444,7 @@ function boot(){
   applyTheme();
   const loaded=load();G=loaded||newGame();
   initStats();ui.face=moodFace();ui.mode='home';
-  setScenery('home',false);renderAll();
+  setScenery('home',false);renderAll();updHz();addEventListener('resize',updHz);setTimeout(updHz,300);
   // 모바일 오디오: 실제 "사용자 활성화"로 인정되는 이벤트(터치 끝·클릭·키)에서 오디오를 깨운다
   ['pointerdown','pointerup','touchend','click','keydown'].forEach(t=>document.addEventListener(t,()=>Sound.unlock(),{capture:true,passive:true}));
   $('#mlgAnim').addEventListener('pointerdown',sqBegin);
