@@ -64,7 +64,8 @@ button:focus-visible,input:focus-visible{outline:2.5px solid var(--berry);outlin
 .hud{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px 6px}
 .plate{display:flex;align-items:center;gap:8px;min-width:0;padding:4px 14px 4px 4px;border-radius:999px;background:var(--paper);box-shadow:var(--lip),inset 0 0 0 2px var(--line);text-align:left}
 .plate-av{width:42px;height:42px;border-radius:50%;background:var(--paper2);display:grid;place-items:center;overflow:hidden;flex:none}
-.plate-av svg{width:52px;margin-top:6px}
+.plate-av{padding:4px}
+.plate-av svg{width:100%;height:100%;display:block;margin:0}
 .plate-txt{display:flex;flex-direction:column;min-width:0;line-height:1.15}
 .plate-txt b{font-size:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .plate-txt small{font-size:11.5px;color:var(--sub);white-space:nowrap}
@@ -101,20 +102,26 @@ body.mode-run .stage-nav,body.mode-plan .stage-nav{display:none}
 #placeTag{position:absolute;left:12px;top:12px;z-index:3;display:flex;align-items:center;gap:4px;padding:4px 12px 4px 6px;border-radius:12px;background:var(--paper);font-family:"Jua",sans-serif;font-size:15px;box-shadow:0 3px 0 rgba(62,52,49,.15);animation:tagin .3s cubic-bezier(.3,1.5,.6,1)}
 #placeTag .ic{width:18px;height:18px}
 @keyframes tagin{from{transform:translateY(-10px) rotate(-4deg);opacity:0}to{transform:none;opacity:1}}
-#bubble{position:absolute;left:50%;top:20%;max-width:76%;padding:9px 16px 10px;border-radius:24px 28px 26px 22px/22px 26px 24px 28px;
-  background:var(--bubble);color:#3e3431;font-size:17px;line-height:1.3;text-align:center;border:2.5px solid #3e3431;box-shadow:0 4px 0 rgba(62,52,49,.18);
-  white-space:nowrap;z-index:4;pointer-events:none;opacity:0;transform:translate(-50%,8px) scale(.3);transform-origin:50% 120%}
-#bubble::after{content:"";position:absolute;left:var(--tail,50%);bottom:-11px;margin-left:-8px;width:16px;height:14px;background:inherit;border-right:2.5px solid #3e3431;border-bottom:2.5px solid #3e3431;border-radius:0 0 10px 0;transform:rotate(45deg) skew(10deg,10deg)}
-#bubble.show{animation:bubIn .45s cubic-bezier(.3,1.6,.5,1) forwards}
-#bubble.hide{animation:bubOut .22s ease-in forwards}
-@keyframes bubIn{0%{opacity:0;transform:translate(-50%,12px) scale(.3,.2)}55%{opacity:1;transform:translate(-50%,-4px) scale(1.1,.92)}80%{transform:translate(-50%,0) scale(.97,1.04)}100%{opacity:1;transform:translate(-50%,0) scale(1)}}
-@keyframes bubOut{from{opacity:1;transform:translate(-50%,0) scale(1)}to{opacity:0;transform:translate(-50%,8px) scale(.55)}}
-#bubble.mur{background:#fbf6ee;border-color:rgba(62,52,49,.55);color:#6b5a52;font-size:15px;border-radius:30px}
-#bubble.mur::after{width:10px;height:10px;border-radius:50%;border:2px solid rgba(62,52,49,.55);bottom:-14px;transform:none;margin-left:-5px}
-#bubble.mur::before{content:"";position:absolute;left:calc(var(--tail,50%) - 10px);bottom:-24px;width:6px;height:6px;border-radius:50%;background:#fbf6ee;border:2px solid rgba(62,52,49,.55)}
-#bubble.sh{background:#fff3c4;font-size:19px;border-width:3px}
-#bubble.sh.show{animation:bubIn .45s cubic-bezier(.3,1.6,.5,1) forwards,bubShake .3s .45s ease-in-out 2}
-@keyframes bubShake{0%,100%{transform:translate(-50%,0) rotate(0)}25%{transform:translate(-50%,0) rotate(-3deg)}75%{transform:translate(-50%,0) rotate(3deg)}}
+
+/* 말풍선: 외곽선 없이 부드러운 그림자 하나로 본체와 꼬리를 한 덩어리처럼 */
+#bubble{--bb:#fffdf8;position:absolute;left:0;top:0;max-width:72%;padding:8px 15px 9px;border-radius:20px;background:var(--bb);color:#4b3f39;
+  font-size:16px;line-height:1.35;text-align:center;white-space:normal;word-break:keep-all;z-index:4;pointer-events:none;opacity:0;
+  transform-origin:var(--tail,50%) calc(100% + 12px);filter:drop-shadow(0 2px 0 rgba(62,52,49,.07)) drop-shadow(0 6px 12px rgba(62,52,49,.16))}
+#bubble .bt i{font-style:normal;opacity:0;transition:opacity .12s}
+#bubble .bt i.on{opacity:1}
+#bubble .btail{position:absolute;left:var(--tail,50%);top:calc(100% - 1px);width:22px;height:13px;margin-left:-11px;overflow:visible}
+#bubble .btail path{fill:var(--bb)}
+#bubble .bdot{position:absolute;border-radius:50%;background:var(--bb)}
+#bubble .bdot.d1{left:calc(var(--tail,50%) - 3px);top:calc(100% + 4px);width:9px;height:9px}
+#bubble .bdot.d2{left:calc(var(--tail,50%) - 8px);top:calc(100% + 15px);width:5px;height:5px}
+#bubble.show{animation:bubIn .38s cubic-bezier(.34,1.56,.64,1) forwards}
+#bubble.hide{animation:bubOut .2s ease-in forwards}
+#bubble.mur{--bb:#fbf6ee;color:#7a675d;font-size:14.5px;padding:7px 13px;border-radius:18px}
+#bubble.sh{--bb:#fff2c2;font-size:18px}
+#bubble.sh.show{animation:bubIn .38s cubic-bezier(.34,1.56,.64,1) forwards,bubHop .32s .38s ease-out 1}
+@keyframes bubIn{0%{opacity:0;transform:translateY(8px) scale(.55)}60%{opacity:1;transform:translateY(-2px) scale(1.04)}100%{opacity:1;transform:none}}
+@keyframes bubOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(4px) scale(.85)}}
+@keyframes bubHop{0%,100%{transform:none}40%{transform:translateY(-3px) rotate(-1.5deg)}}
 #prop{position:absolute;width:44px;height:44px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:2}
 #prop .ic{width:100%;height:100%}
 #prop.show{opacity:1;animation:bob 1s ease-in-out infinite}
@@ -1869,10 +1876,17 @@ function accSVG(acc,sh){
   }
   return '';
 }
-function malangSVG({sp='jelly',hue=122,pal=null,w=5,face='normal',acc=null}={}){
+// 프로필 썸네일용: 말랑이 종류·체형·액세서리의 실제 범위를 계산해 몸 중심이 정중앙에 오는 정사각 viewBox를 만든다
+function avatarVB(sp,w,acc){
+  const sh=shape(sp,w),halfW=Math.max(sh.hw+sh.k*.5,sp==='pudding'?sh.hw+14:0)+6;
+  const top=sh.top-(acc==='chef'?30:acc?14:4),bot=sh.base+8,cy=(top+bot)/2;
+  const size=Math.max(halfW*2,bot-top)*1.12;
+  return `${(100-size/2).toFixed(1)} ${(cy-size/2).toFixed(1)} ${size.toFixed(1)} ${size.toFixed(1)}`;
+}
+function malangSVG({sp='jelly',hue=122,pal=null,w=5,face='normal',acc=null,vb=null}={}){
   const id='sg'+(++UID),sh=shape(sp,w),c=palOf(sp,hue,pal);
   const plate=sp==='pudding'?`<ellipse cx="100" cy="171" rx="${sh.hw+14}" ry="7" fill="#fffaf2" stroke="#e5d8c8" stroke-width="1.5"/>`:'';
-  return `<svg class="slime" viewBox="-25 40 250 145" aria-hidden="true"><defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c[0]}"/><stop offset="1" stop-color="${c[1]}"/></linearGradient></defs><ellipse cx="100" cy="171" rx="${sh.hw+sh.k*.5}" ry="6" fill="#000" opacity=".12"/>${plate}<g class="sb i-${sh.S.idle}">${bodyParts(sh,c,id,id+'c',w)}${faceSVG(face,sh)}${accSVG(acc,sh)}</g></svg>`;
+  return `<svg class="slime" viewBox="${vb||'-25 40 250 145'}" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c[0]}"/><stop offset="1" stop-color="${c[1]}"/></linearGradient></defs><ellipse cx="100" cy="171" rx="${sh.hw+sh.k*.5}" ry="6" fill="#000" opacity=".12"/>${plate}<g class="sb i-${sh.S.idle}">${bodyParts(sh,c,id,id+'c',w)}${faceSVG(face,sh)}${accSVG(acc,sh)}</g></svg>`;
 }
 function myAcc(){const f=G.malang.flags;return f.wearFlower?'flower':f.wearBand?'band':null}
 function renderMalang(){
@@ -1989,17 +2003,25 @@ const PROP_POS={zzz:[62,54],angry:[62,58],steam:[62,50],coin:[64,50]};
 function setProp(p){const el=$('#prop');if(!p){el.classList.remove('show');return}const [l,b]=PROP_POS[p]||[68,12];el.style.left=l+'%';el.style.bottom=b+'%';el.innerHTML=ic(p);el.classList.add('show')}
 // 말풍선: 머리 위에서 '뽀옹' 하고 부풀어 오르고, 글자가 또박또박 나온다. 혼잣말(mur)·외침(sh)·말(say)
 function speak(t,ms=1500,kind){
+  // 위치 오류 원인: 예전엔 중심(left)+translate(-50%)로 놓고 타자 효과로 글자 수만큼 폭이 자라났는데,
+  // 일부 브라우저(iOS Safari)는 애니메이션 중 % 이동값을 시작 시점 폭으로 고정해서 말풍선이 오른쪽에서 생겼다가 가운데로 밀려왔다.
+  // → 전체 문장으로 최종 크기를 먼저 확정하고, 좌표는 px로 고정. 글자는 투명도로만 하나씩 보여 준다.
   const b=$('#bubble'),st=$('#stage');if(!b||!st)return;
   kind=kind||(/!$/.test(t)&&Math.random()<.5?'sh':'say');
   clearTimeout(ui.bubbleT);clearInterval(ui.typeT);
-  b.className='cute '+kind;b.innerHTML='<span></span>';const sp=b.firstChild;
-  sp.textContent=t;
-  const sr=st.getBoundingClientRect(),mr=$('#mlgInner').getBoundingClientRect(),bw=b.offsetWidth,bh=b.offsetHeight;
-  const lift=$('#toyPlay')&&$('#toyPlay').classList.contains('tp-wear')?34:0;
-  const cx=clamp(mr.left-sr.left+mr.width/2,bw/2+8,sr.width-bw/2-8),top=clamp(mr.top-sr.top-bh-16-lift,8,sr.height-bh-30);
-  b.style.left=cx+'px';b.style.top=top+'px';
-  b.style.setProperty('--tail',clamp(mr.left-sr.left+mr.width/2-cx+bw/2,18,bw-18)+'px');
-  if(kind!=='sh'&&t.length>2){const chars=[...t];let i=0;sp.textContent='';ui.typeT=setInterval(()=>{sp.textContent+=chars[i++]||'';if(i>=chars.length)clearInterval(ui.typeT)},Math.max(16,34/speed))}
+  b.className='cute '+kind;b.style.width='';b.style.left='0px';b.style.top='0px';
+  const chars=[...t];
+  b.innerHTML=`<span class="bt">${chars.map(c=>`<i>${esc(c)}</i>`).join('')}</span>`+(kind==='mur'?'<b class="bdot d1"></b><b class="bdot d2"></b>':'<svg class="btail" viewBox="0 0 22 13" aria-hidden="true"><path d="M0 0H22C16 1.5 13 5 12.2 11.3C12 12.9 10.6 13.1 10.2 11.5C9.2 5.3 6 1.5 0 0Z"/></svg>');
+  const sr=st.getBoundingClientRect(),mr=$('#mlgInner').getBoundingClientRect(),bw=Math.ceil(b.offsetWidth),bh=b.offsetHeight;
+  b.style.width=bw+'px';
+  const lift=$('#toyPlay')&&$('#toyPlay').classList.contains('tp-wear')?34:0,head=mr.left-sr.left+mr.width/2;
+  const cx=clamp(head,bw/2+8,sr.width-bw/2-8),top=clamp(mr.top-sr.top-bh-(kind==='mur'?24:16)-lift,8,sr.height-bh-30);
+  const left=Math.round(cx-bw/2);
+  b.style.left=left+'px';b.style.top=Math.round(top)+'px';
+  b.style.setProperty('--tail',clamp(head-left,20,bw-20)+'px');
+  const is=b.querySelectorAll('.bt i');
+  if(kind==='sh'||is.length<3)is.forEach(e=>e.classList.add('on'));
+  else{let k=0;ui.typeT=setInterval(()=>{if(is[k])is[k].classList.add('on');k++;if(k>=is.length)clearInterval(ui.typeT)},Math.max(16,30/speed))}
   void b.offsetWidth;b.classList.add('show');
   ui.bubbleT=setTimeout(()=>{b.classList.remove('show');b.classList.add('hide')},Math.max(700,ms/speed+t.length*20));
 }
@@ -2084,7 +2106,7 @@ function renderHeader(){
   $('#money').textContent=G.money;
   $('#mName').textContent=m.name;
   $('#mSub').textContent=(m.gen>1?`${m.gen}대째 · `:'')+`${st.name} ${spName(m)} 말랑이`;
-  if(ui.avKey!==key){ui.avKey=key;$('#plateAv').innerHTML=malangSVG({sp:m.species,hue:m.hue,pal:m.pal,face:'normal',acc:myAcc()})}
+  if(ui.avKey!==key){ui.avKey=key;$('#plateAv').innerHTML=malangSVG({sp:m.species,hue:m.hue,pal:m.pal,face:'normal',acc:myAcc(),vb:avatarVB(m.species,5,myAcc())})}
   const wk=G.phase==='ending'?CFG.weeks+1:G.week;
   $('#beads').innerHTML=Array.from({length:CFG.weeks},(_,i)=>`<i class="${i+1<wk?'on':i+1===wk?'now':''}${(i+1)%4===0?' chp':''}"></i>`).join('');
   const t=tendency();$('#mTend').innerHTML=ic(t.i)+t.t;
